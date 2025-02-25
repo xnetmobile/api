@@ -46,11 +46,11 @@ v0.1 is unstable and subject to breaking changes. Please wait for v1.0 before bu
 
 ---
 
-**Documentation for this API can be found on our website at https://docs.xnet.company/docs/tech/api/documentation**
+**Documentation for this API can be found on our website at https://docs.xnet.company/tech/api/overview**
 
 ## Conclusion
 The XNET API is your gateway to accessing and managing a wide range of XNET resources. As the system evolves, you can expect more features and improvements. Stay tuned for future releases as we roll out enhanced functionalities and tools.
 
-For more detailed information on each endpoint, refer to the full OpenAPI documentation provided on our website at https://docs.xnet.company/docs/tech/api/documentation along with the swagger.yml file.
+For more detailed information on each endpoint, refer to the full OpenAPI documentation provided on our website at https://docs.xnet.company/tech/api/overview along with the swagger.yml file.
 
 Happy coding!
