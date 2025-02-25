@@ -1,0 +1,2441 @@
+openapi: 3.0.3
+info:
+  title: XNET API
+  description: |-
+    This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.1 is unstable and subject to breaking changes. Please wait for v1.0 before building with this API.
+  version: 0.1.0
+servers:
+  - url: https://api.xnet.company
+security:
+  - BearerAuth: [ ]
+tags:
+  - name: auth
+    description: XNET API Token
+  - name: organizations
+    description: XNET organizations
+  - name: members
+    description: XNET members
+  - name: users
+    description: XNET users
+  - name: venues
+    description: XNET venues
+  - name: devices
+    description: XNET devices
+  - name: catalogs
+    description: XNET catalogs
+  - name: wallets
+    description: XNET wallets
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: User token with email and password
+      description: Authenticate user and return access token
+      security: [ ]  # No security required for login endpoint
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: "********"
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT access token
+                  expiresIn:
+                    type: integer
+                    description: Token lifetime in seconds
+                    example: 3600
+                  tokenType:
+                    type: string
+                    example: "Bearer"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /devices:
+    get:
+      tags:
+        - devices
+      summary: Get a list of devices
+      description: Get a list of devices that can be filtered by organizations and/or venues
+      operationId: getDevices
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: The number of items per page
+          required: false
+          schema:
+            type: integer
+        - name: filter
+          in: query
+          required: false
+          description: A pattern to filter for in organization id and/or venue id, i.e path?filter[orgID]=value&filter[venueId]=value
+          schema:
+            type: object
+            properties:
+              orgId:
+                type: string
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+              venueId:
+                type: string
+                example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+                description: The uuid of the device's venue
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/DeviceId'
+                    - $ref: '#/components/schemas/DeviceDto'
+                    - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - devices
+      summary: Create a device
+      description: Creates a new device
+      operationId: createDevice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceDtoR'
+      responses:
+        '201':
+          description: Created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DeviceId'
+                  - $ref: '#/components/schemas/DeviceDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /devices/:{id}:
+    get:
+      tags:
+        - devices
+      summary: Get a device
+      description: Get device details by a specific device
+      operationId: findDeviceById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The device uuid
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DeviceId'
+                  - $ref: '#/components/schemas/DeviceDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - devices
+      summary: Patch a device
+      description: Change details about a specific device
+      operationId: updateDevice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The device uuid
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceDto'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DeviceId'
+                  - $ref: '#/components/schemas/DeviceDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - devices
+      summary: Delete a device
+      description: Deletes a specific device
+      operationId: deleteDevice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+            description: The device uuid
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /devices/:{id}/state:
+    get:
+      tags:
+        - devices
+      summary: Get device state
+      description: Get the current state of a specific device
+      operationId: findDeviceStateById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+            description: The device uuid
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DeviceStats'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /devices/:{id}/venue:
+    post:
+      tags:
+        - devices
+      description: Associate a venue with a specific device
+      summary: Add a venue to device
+      operationId: createVenueDevice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The device uuid
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceVenue'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DeviceId'
+                  - $ref: '#/components/schemas/DeviceDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - devices
+      summary: Remove venue from device
+      description: Removes venue association from a specific device
+      operationId: deleteVenueDevice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The venue identifier
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /devices/:{id}/tags:
+    post:
+      tags:
+        - devices
+      summary: Add a tag to devices
+      description: Assign a tag to a specific device
+      operationId: assignDeviceTagById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The device uuid
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tags'
+      responses:
+        '201':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DeviceId'
+                  - $ref: '#/components/schemas/DeviceDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - devices
+      summary: Remove tags from devices
+      description: Remove tags association from a specific device
+      operationId: removeDeviceTagById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DeviceId'
+                  - $ref: '#/components/schemas/DeviceDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /catalog/wifiap:
+    get:
+      tags:
+        - catalogs
+      summary: Get a list of Wifi AP models
+      description: Get a list of Wifi AP models that can be filtered by vendor name, model or product code
+      operationId: getWifiApModels
+      parameters:
+        - name: vendor
+          in: query
+          description: A pattern to filter for in vendor name
+          required: false
+          schema:
+            type: string
+        - name: model
+          in: query
+          description: A pattern to filter for in vendor model
+          required: false
+          schema:
+            type: string
+        - name: product
+          in: query
+          description: A pattern to filter for in product code
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: The number of items per page
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CatalogWifi'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /catalog/wifiap/{id}:
+    get:
+      tags:
+        - catalogs
+      summary: Get info about an Wifi AP model
+      description: Get details about a Wifi AP model
+      operationId: getWifiApModel
+      parameters:
+        - name: id
+          in: path
+          description: The catalog identifier of Wifi AP model to return
+          required: true
+          schema:
+            type: string
+            example: abeaaaf2-d142-11e1-b3e4-080027620c43
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CatalogWifi'
+                  - $ref: '#/components/schemas/CatalogWifiDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /venues:
+    get:
+      tags:
+        - venues
+      summary: Get a list of venues
+      description: Get a list of venues that can be filtered by organizations
+      operationId: getVenues
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: The number of items per page
+          required: false
+          schema:
+            type: integer
+        - name: filter
+          in: query
+          required: false
+          description: A pattern to filter for in organization id , i.e path?filter[orgId]=value
+          schema:
+            type: object
+            properties:
+              orgId:
+                type: string
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVenue'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - venues
+      summary: Add a venue
+      description: Creates a new venue
+      operationId: createVenues
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VenueRequestBody'
+      responses:
+        '201':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VenueResponseDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /venues/:{id}:
+    get:
+      tags:
+        - venues
+      summary: Get a venue
+      description: Get venue details by a specific venue
+      operationId: findVenueById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The uuid of a venue
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VenueResponseDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - venues
+      summary: Patch a venue
+      description: Change details about a venue
+      operationId: updateVenueById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The uuid of a venue
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/VenueUpdateBody'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VenueResponseDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - venues
+      summary: Delete a venue
+      description: Delete a specific venue
+      operationId: deleteVenueById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The uuid of a venue
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      responses:
+        '204':
+          description: Successful
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /venues/:{id}/wallet:
+    post:
+      tags:
+        - venues
+      summary: Add a wallet to venues
+      description: Assign a wallet to a specific venue
+      operationId: assignVenueWalletById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The uuid of a venue
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VenueWallet'
+      responses:
+        '201':
+          description: Created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VenueWalletDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - venues
+      summary: Remove wallet from venues
+      description: Remove wallet association from a specific venue
+      operationId: removeVenueWalletById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The venue identifier
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      responses:
+        '204':
+          description: Successful
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /venues/:{id}/tags:
+    post:
+      tags:
+        - venues
+      summary: Add a tag to venues
+      description: Assign tag to a specific venue
+      operationId: assignVenueTagById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The venue identifier
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tags'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VenueResponseDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - venues
+      summary: Remove tag from venues
+      description: Remove tags from a specific venue
+      operationId: removeVenueTagById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The uuid of a venue
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VenueResponseDto'
+                  - $ref: '#/components/schemas/TagsDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /venues/:{id}/qualification:
+    get:
+      tags:
+        - venues
+      summary: Get venue qualification
+      description: Associate the qualification of a specific venue
+      operationId: venueQualified
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The venue identifier
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VenueQualifiedDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /wallets:
+    get:
+      tags:
+        - wallets
+      summary: Get a list of wallets
+      description: Get a list of wallets that can be filtered by organizations and/or venues and/or users
+      operationId: findWallets
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          required: false
+          description: The number of items per page
+          schema:
+            type: integer
+        - name: filter
+          description: A pattern to filter for in organization, venue, or user identifier
+          in: query
+          required: false
+          schema:
+            type: object
+            properties:
+              orgId:
+                type: string
+                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+                description: The uuid of an organization
+              venueId:
+                type: string
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                description: The uuid of a venue
+              userId:
+                type: string
+                example: cdff0d7c-599a-4221-a99b-8b2f15bb110a
+                description: The uuid of a user
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    wallets:
+                      allOf:
+                        - $ref: '#/components/schemas/Wallet'
+                    total:
+                      type: integer
+                      example: 1
+                    page:
+                      type: integer
+                      example: 1
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - wallets
+      summary: Add a wallet
+      description: Creates a new wallet
+      operationId: createWallets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/WalletId'
+                - $ref: '#/components/schemas/WalletDtoR'
+      responses:
+        '201':
+          description: Created successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/WalletId'
+                  - $ref: '#/components/schemas/WalletDto'
+                  - $ref: '#/components/schemas/WalletDateDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /wallets/:{id}:
+    get:
+      tags:
+        - wallets
+      summary: Get a wallet
+      description: Get details from a specific wallet
+      operationId: findWalletsById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The address of a wallet
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/WalletId'
+                  - $ref: '#/components/schemas/WalletDto'
+                  - $ref: '#/components/schemas/Wallet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - wallets
+      summary: Patch a wallet
+      description: Change details about a specific wallet
+      operationId: updateWalletById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The address of a wallet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletDto'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/WalletId'
+                  - $ref: '#/components/schemas/WalletDto'
+                  - $ref: '#/components/schemas/Wallet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - wallets
+      summary: Delete a wallet
+      description: Delete a specific wallet
+      operationId: deleteWalletById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The address of a wallet
+      responses:
+        '204':
+          description: Successful
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /organizations:
+    get:
+      tags:
+        - organizations
+      summary: Get a list of organizations
+      description: Get a list of organizations
+      operationId: findOrganizations
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: The number of items per page
+          required: false
+          schema:
+            type: integer
+        - name: filter
+          in: query
+          required: false
+          description: A pattern to filter for in organization identifier, i.e /organizations?filter[orgID]=value
+          schema:
+            type: object
+            properties:
+              orgId:
+                type: string
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+              status:
+                type: string
+                example: active
+              type:
+                type: string
+                example: community
+
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Organization'
+                    - $ref: '#/components/schemas/OrganizationUser'
+              examples:
+                no_filter_response:
+                  summary: Response when no filters are applied
+                  value: [
+                    {
+                      "id": "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d",
+                      "status": "active",
+                      "name": "XNET Main",
+                      "phone": "123-456-7890",
+                      "type": "community",
+                      "notes": "Primary organization",
+                      "createdat": "2025-01-03T14:54:29.204Z",
+                      "updatedat": "2025-01-03T14:54:29.204Z",
+                      "users": [ "8186a947-8670-4cc9-be1a-79efd18defea" ]
+                    }
+                  ]
+                filtered_response:
+                  summary: Response when filters are applied
+                  value: [
+                    {
+                      "id": "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d",
+                      "status": "active",
+                      "name": "XNET Branch",
+                      "phone": "123-456-7891",
+                      "type": "community",
+                      "notes": "Branch organization",
+                      "createdat": "2025-01-03T14:54:29.204Z",
+                      "updatedat": "2025-01-03T14:54:29.204Z",
+                      "users": [ "0cd6b14d-024c-4bbe-821c-1cff032fcf88" ]
+                    }
+                  ]
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - organizations
+      summary: Create an organization
+      description: Creates a new organization
+      operationId: createOrganizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationDto'
+      responses:
+        '201':
+          description: Created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Organization'
+                  - $ref: '#/components/schemas/OrganizationSingleUser'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /organizations/:{id}:
+    get:
+      tags:
+        - organizations
+      summary: Get an organization
+      description: Get details of a specific organization
+      operationId: findOrganizationsById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The uuid of an organization
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Organization'
+                    - $ref: '#/components/schemas/OrganizationUser'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - organizations
+      summary: Patch an organization
+      description: Update details of a specific organization
+      operationId: updateOrganizationsById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The uuid of an organization
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationDtoO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Organization'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - organizations
+      summary: Delete an organization
+      description: Delete a specific organization
+      operationId: deleteOrganizationsById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The organization identifier
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /members:
+    get:
+      tags:
+        - members
+      summary: Get a list of members
+      description: Get a list of members
+      operationId: findAllOrgMembers
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: The number of items per page
+          required: false
+          schema:
+            type: integer
+        - name: filter
+          in: query
+          required: false
+          description: A pattern to filter for in organization and/or user, i.e path?filter[orgId]=value&filter[userId]=value
+          schema:
+            type: object
+            properties:
+              orgId:
+                type: string
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+              userId:
+                type: string
+                example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Members'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - members
+      summary: Creates a member
+      description: Creates a new member of a specific organization
+      operationId: findOrgMember
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembersDto'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembersInactive'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /members/org/:{orgid}/user/:{userid}:
+    patch:
+      tags:
+        - members
+      summary: Update details of a member
+      description: Change details of a specific member of an organization
+      operationId: updateOrgMember
+      parameters:
+        - name: orgid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembersDtoO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Members'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - members
+      summary: Delete an user member
+      description: Deletes an user member of a specific organization
+      operationId: deleteOrgMemberById
+      parameters:
+        - name: orgid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get a list of users
+      description: Get a list of user that can be filtered by email and organization
+      operationId: findUsers
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: The number of items per page
+          required: false
+          schema:
+            type: integer
+        - name: filter
+          in: query
+          required: false
+          description: A pattern to filter for in users and/or user, i.e /users?filter[orgId]=value&filter[email]=value
+          schema:
+            type: object
+            properties:
+              orgId:
+                type: string
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+              email:
+                type: string
+                example: user@xnet.company
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - users
+      summary: Create an user
+      description: Creates an new user
+      operationId: createUsers
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        '201':
+          description: Created successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UserInactive'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/:{id}:
+    get:
+      tags:
+        - users
+      summary: Get an user
+      description: Get details of a specific user
+      operationId: findUsersById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user identifier
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - users
+      summary: Update an user
+      description: Update details of a specific user
+      operationId: updateUsersById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user identifier
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDtoO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - users
+      summary: Delete an user
+      description: Delete a specific user
+      operationId: deleteUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user identifier
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {
+                  message: {
+                    type: string,
+                    example: User with userid '9d6950f8-24ae-48b1-accf-bc6399351d5c' has been successfully deleted.
+                  }
+                }
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/:{id}/wallet:
+    post:
+      tags:
+        - users
+      summary: Add a wallet to users
+      description: Assign a wallet to a specific user
+      operationId: assignUserWalletById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user identifier
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersWallet'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UsersWalletDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - users
+      summary: Update a wallet to users
+      description: Change wallet information of a specific user
+      operationId: updateUserWalletById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user identifier
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersWallet'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UsersWalletDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - users
+      summary: Remove user wallet
+      description: Remove wallet association from a specific user
+      operationId: deleteUserWallet
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user identifier
+          schema:
+            type: string
+            example: 8186a947-8670-4cc9-be1a-79efd18defea
+      responses:
+        '204':
+          description: Successful
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |-
+        All API requests must include a valid bearer token obtained from the /auth/login endpoint.
+        Tokens are bound to specific user accounts and permissions.
+  schemas:
+    DeviceId:
+      type: object
+      properties:
+        id:
+          type: string
+          example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+          description: The device uuid
+    DeviceDtoR:
+      type: object
+      required:
+        - macAddress
+        - vendorsn
+        - catalogId
+      properties:
+        status:
+          type: string
+          example: active
+          description: The status of the device
+        venueid:
+          type: string
+          example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
+          description: The uuid of the device's venue
+        macAddress:
+          type: string
+          format: int64
+          example: be:b1:21:02:fa:18
+          description: The macaddress of a device
+        vendorsn:
+          type: string
+          example: AP123456789
+          description: The serial number of a device
+        catalogId:
+          type: string
+          example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
+          description: The catalog uuid associated with the device
+    DeviceDto:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+          description: The status of the device
+        venueid:
+          type: string
+          example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
+          description: The uuid of the device's venue
+        macAddress:
+          type: string
+          format: int64
+          example: be:b1:21:02:fa:18
+          description: The macaddress of a device
+        vendorsn:
+          type: string
+          example: AP123456789
+          description: The serial number of a device
+        catalogId:
+          type: string
+          example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
+          description: The catalog uuid associated with the device
+    DeviceStats:
+      type: object
+      properties:
+        alive:
+          type: integer
+          example: 0
+          description: The current state of a device. If its connected (1) or disconnected (0)
+        statusCheckTime:
+          type: string
+          example: "2024-01-01 00:00:00"
+          description: The time when the device information was obtained
+        channel:
+          type: string
+          example: 20 MHz
+          description: The channel configured on the device
+        bandWith:
+          type: string
+          example: 37.774929
+          description: The bandWith configured on the device
+    VenueRequestBody:
+      type: object
+      required:
+        - orgId
+        - name
+        - fullAddress
+        - venueDesc
+        - venuephone
+        - isp
+      properties:
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of the organization to which the venue belongs
+        name:
+          type: string
+          example: XNET Campus
+          description: The name of a venue
+        fullAddress:
+          type: string
+          example: 1111 S Figueroa St, Los Angeles, CA 90015, USA
+          description: The full address of a venue
+        venueDesc:
+          type: string
+          example: PROFESSIONAL OFFICE
+          description: The type of a venue
+        venuephone:
+          type: string
+          example: 547-546-4567
+          description: The phone of a venue
+        isp:
+          $ref: '#/components/schemas/IspDtoR'
+    VenueUpdateBody:
+      type: object
+      properties:
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of the organization to which the venue belongs
+        name:
+          type: string
+          example: XNET Campus
+          description: The name of a venue
+        venuedesc:
+          type: string
+          example: PROFESSIONAL OFFICE
+          description: The description of a venue
+        venuephone:
+          type: string
+          example: 547-546-4567
+          description: The phone of a venue
+        isp:
+          $ref: '#/components/schemas/IspDto'
+    VenueResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of a venue
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of the organization to which the venue belongs
+        name:
+          type: string
+          example: XNET Campus
+          description: The name of a venue
+        status:
+          type: string
+          example: inactive
+          description: The current status of a venue
+        fulladdress:
+          type: string
+          example: 1111 S Figueroa St, Los Angeles, CA 90015, USA
+          description: The full address of a venue
+        venuedesc:
+          type: string
+          example: PROFESSIONAL OFFICE
+          description: The type of a venue
+        venuephone:
+          type: string
+          example: 547-546-4567
+          description: The phone of a venue
+        latitude:
+          type: string
+          example: 34.043087
+          description: The geographic coordinate that specifies the north-south position of a venue
+        longitude:
+          type: string
+          example: 34.043087
+          description: The geographic coordinate that specifies the west-east position of a venue
+        isp:
+          $ref: '#/components/schemas/IspDto'
+    VenueWallet:
+      properties:
+        wallet:
+          properties:
+            address:
+              type: string
+              example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+              description: The wallet address associated with the venue
+    VenueWalletDto:
+      properties:
+        wallet:
+          properties:
+            venueid:
+              type: string
+              example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+              description: The uuid of a venue
+            address:
+              type: string
+              example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+              description: The wallet address associated with the venue
+    IspDtoR:
+      type: object
+      required:
+        - name
+        - class
+        - connection
+        - bandwith
+        - ispSecurity
+      properties:
+        name:
+          type: string
+          example: Comcast
+          description: The name of a isp
+        class:
+          type: string
+          example: business
+          description: The class of a isp
+        connection:
+          type: string
+          example: Fiber
+          description: The connection of a isp
+        bandwith:
+          type: integer
+          example: 500-999
+          description: The bandwith of a isp
+        ispSecurity:
+          type: array
+          items:
+            type: string
+          description: The physical and network security in place around the access point.
+          example:
+            - VPN Gateway
+            - Network Segmentation (L3) (VLANS)
+    IspDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Comcast
+          description: The name of a isp
+        class:
+          type: string
+          example: business
+          description: The class of a isp
+        connection:
+          type: string
+          example: Fiber
+          description: The connection of a isp
+        bandwith:
+          type: integer
+          example: 500-999
+          description: The bandwith of a isp
+        ispSecurity:
+          type: array
+          items:
+            type: string
+          description: The physical and network security in place around the access point.
+          example:
+            - VPN Gateway
+            - Network Segmentation (L3) (VLANS)
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: The address of a wallet
+        venueId:
+          type: array
+          items:
+            type: string
+          example: ["9fb083a7-a310-4a9a-8a26-cd78cdd35e04"]
+          description: An array of venue uuids associated with the wallet
+        userId:
+          type: string
+          example: cdff0d7c-599a-4221-a99b-8b2f15bb110a
+          description: The user uuid associated with this wallet
+    WalletId:
+      type: object
+      properties:
+        id:
+          type: string
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: The address of a wallet
+    WalletDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: wallet name
+          description: The name of a wallet
+        notes:
+          type: string
+          example: notes
+          description: The notes of a wallet
+    WalletDtoR:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: The address of a wallet
+        name:
+          type: string
+          example: wallet name
+          description: The name of a wallet
+        notes:
+          type: string
+          example: notes
+          description: The notes of a wallet
+    WalletDateDto:
+      type: object
+      properties:
+        createdat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a wallet was created
+        updatedat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a wallet was updated
+    OrganizationUser:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            example: "8186a947-8670-4cc9-be1a-79efd18defea"
+            description: The members of an organization
+          example:
+            - "8186a947-8670-4cc9-be1a-79efd18defea"
+            - "0cd6b14d-024c-4bbe-821c-1cff032fcf88"
+          description: The members of an organization
+    OrganizationSingleUser:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            example: "8186a947-8670-4cc9-be1a-79efd18defea"
+            description: The members of an organization
+          example:
+            - "8186a947-8670-4cc9-be1a-79efd18defea"
+          description: The members of an organization
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of an organization
+        status:
+          type: string
+          example: active
+          description: The status of an organization
+        name:
+          type: string
+          example: XNET
+          description: The name of an organization
+        phone:
+          type: string
+          example: 123-456-7890
+          description: The phone of an organization
+        type:
+          type: string
+          example: community
+          description: The type of an organization
+        notes:
+          type: string
+          example: best org ever
+          description: Internal notes for additional context regarding the organization
+        createdat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time an organization was created
+        updatedat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time an organization was updated
+    OrganizationDto:
+      type: object
+      required:
+        - name
+        - phone
+      properties:
+        name:
+          type: string
+          example: XNET
+          description: The name of an organization
+        phone:
+          type: string
+          example: 123-456-7890
+          description: The phone of an organization
+        notes:
+          type: string
+          example: best org ever
+          description: Internal notes for additional context regarding the organization
+    OrganizationDtoO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: XNET
+          description: The name of an organization
+        phone:
+          type: string
+          example: 123-456-7890
+          description: The phone of an organization
+        notes:
+          type: string
+          example: best org ever
+          description: Internal notes for additional context regarding the organization          
+    Members:
+      type: object
+      properties:
+        orgid:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of an organization
+        userid:
+          type: string
+          example: 8186a947-8670-4cc9-be1a-79efd18defea
+          description: The uuid of a user
+        orgrole:
+          type: string
+          example: org-admin
+          description: This field defines the role of a member within the organization
+        status:
+          type: string
+          example: active
+          description: The status of a member
+        notes:
+          type: string
+          example: best admin
+          description: Internal notes for additional context regarding the member
+        createdat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a member was created
+        updatedat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a member was updated
+    MembersInactive:
+      type: object
+      properties:
+        orgid:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of an organization
+        userid:
+          type: string
+          example: 8186a947-8670-4cc9-be1a-79efd18defea
+          description: The uuid of a user
+        orgrole:
+          type: string
+          example: org-admin
+          description: This field defines the role of a member within the organization
+        status:
+          type: string
+          example: inactive
+          description: The status of a member
+        notes:
+          type: string
+          example: best admin
+          description: Internal notes for additional context regarding the member
+        createdat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a member was created
+        updatedat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a member was updated
+    MembersDto:
+      type: object
+      required:
+        - orgid
+        - userid
+        - orgrole
+      properties:
+        orgid:
+          type: string
+          example: org-admin
+          description: The uuid of an organization
+        userid:
+          type: string
+          example: org-admin
+          description: The uuid of a user
+        orgrole:
+          type: string
+          example: org-admin
+          description: This field defines the role of a member within the organization. 
+        notes:
+          type: string
+          example: best admin
+          description: Internal notes for additional context regarding the member
+    MembersDtoO:
+      type: object
+      properties:
+        orgrole:
+          type: string
+          example: org-admin
+          description: This field defines the role of a member within the organization. 
+        notes:
+          type: string
+          example: best admin
+          description: Internal notes for additional context regarding the member
+    UserInactive:
+      type: object
+      properties:
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of an organization
+        id:
+          type: string
+          example: 8186a947-8670-4cc9-be1a-79efd18defea
+          description: The uuid of a user
+        status:
+          type: string
+          example: inactive
+          description: The status of an user
+        name:
+          type: string
+          example: XNET user
+          description: The name of an user
+        phone:
+          type: string
+          example: 123-456-7654
+          description: The phone of an user
+        email:
+          type: string
+          example: xnetsoldier@xnet.com
+          description: The email of an user
+        discord:
+          type: string
+          example: xnetsoldier
+          description: The discord handle of a user
+        telegram:
+          type: string
+          example: "@xnetsoldier"
+          description: The telegram handle of a user
+        socials:
+          type: string
+          example: www.linkedin.com/company/xnetmobile
+          description: The social media link of a user
+        notes:
+          type: string
+          example: the top user
+          description: Internal notes about a user
+        createdat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time an user was created
+        updatedat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time an user was updated
+    User:
+      type: object
+      properties:
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of an organization
+        id:
+          type: string
+          example: 8186a947-8670-4cc9-be1a-79efd18defea
+          description: The uuid of a user
+        status:
+          type: string
+          example: active
+          description: The status of an user
+        name:
+          type: string
+          example: XNET user
+          description: The name of an user
+        phone:
+          type: string
+          example: 123-456-7654
+          description: The phone of an user
+        email:
+          type: string
+          example: xnetuser@xnet.com
+          description: The email of an user
+        discord:
+          type: string
+          example: xnetsoldier
+          description: The discord handle of a user
+        telegram:
+          type: string
+          example: "@xnetsoldier"
+          description: The telegram handle of a user
+        socials:
+          type: string
+          example: www.linkedin.com/company/xnetmobile
+          description: The social media link of a user
+        notes:
+          type: string
+          example: the top user
+          description: Internal notes about a user
+        createdat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time an user was created
+        updatedat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time an user was updated
+    UserDto:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          example: XNET user
+          description: The name of an user
+        phone:
+          type: string
+          example: 123-456-7654
+          description: The phone of an user
+        email:
+          type: string
+          example: xnetuser@xnet.com
+          description: The email of an user
+        discord:
+          type: string
+          example: xnetsoldier
+          description: The discord identifier of an user
+        telegram:
+          type: string
+          example: "@xnetsoldier"
+          description: The telegram handle of a user
+        socials:
+          type: string
+          example: www.linkedin.com/company/xnetmobile
+          description: The social media link of a user
+        notes:
+          type: string
+          example: the top user
+          description: Internal notes about a user
+    UserDtoO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: XNET user
+          description: The name of an user
+        phone:
+          type: string
+          example: 123-456-7654
+          description: The phone of an user
+        discord:
+          type: string
+          example: xnetsoldier
+          description: The discord identifier of an user
+        telegram:
+          type: string
+          example: "@xnetsoldier"
+          description: The telegram handle of a user
+        socials:
+          type: string
+          example: www.linkedin.com/company/xnetmobile
+          description: The social media link of a user
+        notes:
+          type: string
+          example: the top user
+          description: Internal notes about a user
+    UsersWallet:
+      properties:
+        wallet:
+          properties:
+            address:
+              type: string
+              example: FwrmfMgbtFzMwVL62LVe1MP6QrtGv35q5g8gYkLXU2QL
+              description: The wallet address assigned to a user's account
+    UsersWalletDto:
+      properties:
+        wallet:
+          properties:
+            userid:
+              type: string
+              example: 8186a947-8670-4cc9-be1a-79efd18defea
+              description: The uuid of a user
+            address:
+              type: string
+              example: FwrmfMgbtFzMwVL62LVe1MP6QrtGv35q5g8gYkLXU2QL
+              description: The wallet address assigned to a user's account
+    CatalogWifi:
+      type: object
+      properties:
+        id:
+          type: string
+          example: abeaaaf2-d142-11e1-b3e4-080027620c43
+          description: The device model uuid
+    CatalogWifiDto:
+      type: object
+      properties:
+        vendorname:
+          type: string
+          description: "The name of the vendor or manufacturer."
+          example: "Ruckus"
+        vendormodel:
+          type: string
+          description: "The model name or designation from the vendor."
+          example: "XR6"
+        product:
+          type: string
+          description: "The product model as extracted from the AP."
+          example: "XR6PTO"
+        fccid:
+          type: string
+          description: "The FCC ID associated with the Wifi AP Model."
+          example: "FCCIWPA"
+        airint:
+          type: string
+          description: "The air interface type of the Wifi AP Model."
+          example: "WIFI6"
+        sku:
+          type: string
+          description: "The SKU of the model."
+          example: "XPTOXYZ"
+        description:
+          type: string
+          description: "The marketing description for the model."
+          example: "this is a fabulous unit"
+        notes:
+          type: string
+          description: "Additional notes or information about the Wifi AP Model."
+          example: "this is the best"
+    ListVenue:
+      type: object
+      properties:
+        venues:
+          type: array
+          items: 
+            allOf:
+              - $ref: '#/components/schemas/VenueResponseDto'
+              - properties:
+                  tags:
+                    type: array
+                    description: This is a personalized label for this venue
+                    items:
+                      type: string
+                      example: [ A,B ]
+        total:
+          type: integer
+          example: 1
+        page:
+          type: integer
+          example: 1
+    DeviceVenue:
+      type: object
+      properties:
+        venueId:
+          type: string
+          example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+          description: The uuid of the device's venue
+    Tags:
+      type: array
+      description: The name of a tag
+      items:
+        type: string
+      example: [ A,B ]
+    TagsDto:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+          example: [ A,B ]
+          description: This is a personalized label for this resource
+    VenueQualifiedDto:
+      type: object
+      properties:
+        qualified:
+          type: string
+          example: QUALIFIED
+          description: The qualification status of the venue
+        createdat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a qualification venue was created
+        updatedat:
+          type: string
+          example: 2025-01-03T14:54:29.204Z
+          description: The date and time a qualification venue was updated
+    ErrorDto:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A short, human-readable summary of the response type.
+        status:
+          type: string
+          description: The HTTP status code generated by the API server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+  responses:
+    Success:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    NoContent:
+      description: No content
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    BadRequest:
+      description: Incorrect data provided
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    Unauthorized:
+      description: Unauthorized. See specific error message.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    Conflict:
+      description: Request cannot be fulfilled
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    InternalServerError:
+      description: Server error processing the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
