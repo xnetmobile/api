@@ -225,7 +225,7 @@ paths:
     delete:
       tags:
         - devices
-      summary: Delete a device
+      summary: Delete device
       description: Deletes a specific device
       operationId: deleteDevice
       parameters:
