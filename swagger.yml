@@ -31,7 +31,7 @@ paths:
     post:
       tags:
         - auth
-      summary: User token with email and password
+      summary: Get user token
       description: Authenticate user and return access token
       security: [ ]  # No security required for login endpoint
       operationId: loginUser
@@ -79,7 +79,7 @@ paths:
     get:
       tags:
         - devices
-      summary: Get a list of devices
+      summary: Get list of devices
       description: Get a list of devices that can be filtered by organizations and/or venues
       operationId: getDevices
       parameters:
@@ -130,7 +130,7 @@ paths:
     post:
       tags:
         - devices
-      summary: Create a device
+      summary: Create device
       description: Creates a new device
       operationId: createDevice
       requestBody:
@@ -159,7 +159,7 @@ paths:
     get:
       tags:
         - devices
-      summary: Get a device
+      summary: Get device
       description: Get device details by a specific device
       operationId: findDeviceById
       parameters:
@@ -189,7 +189,7 @@ paths:
     patch:
       tags:
         - devices
-      summary: Patch a device
+      summary: Update device
       description: Change details about a specific device
       operationId: updateDevice
       parameters:
@@ -205,7 +205,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeviceDto'
+              $ref: '#/components/schemas/DeviceDtoR'
       responses:
         '200':
           description: Successful
@@ -279,7 +279,7 @@ paths:
       tags:
         - devices
       description: Associate a venue with a specific device
-      summary: Add a venue to device
+      summary: Add venue to device
       operationId: createVenueDevice
       parameters:
         - name: id
@@ -337,7 +337,7 @@ paths:
     post:
       tags:
         - devices
-      summary: Add a tag to devices
+      summary: Add tag to device
       description: Assign a tag to a specific device
       operationId: assignDeviceTagById
       parameters:
@@ -373,7 +373,7 @@ paths:
     delete:
       tags:
         - devices
-      summary: Remove tags from devices
+      summary: Remove tag from device
       description: Remove tags association from a specific device
       operationId: removeDeviceTagById
       parameters:
@@ -402,7 +402,7 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get a list of Wifi AP models
+      summary: Get list of Wifi AP models
       description: Get a list of Wifi AP models that can be filtered by vendor name, model or product code
       operationId: getWifiApModels
       parameters:
@@ -456,7 +456,7 @@ paths:
     get:
       tags:
         - catalogs
-      summary: Get info about an Wifi AP model
+      summary: Get Wifi AP model
       description: Get details about a Wifi AP model
       operationId: getWifiApModel
       parameters:
@@ -486,7 +486,7 @@ paths:
     get:
       tags:
         - venues
-      summary: Get a list of venues
+      summary: Get list of venues
       description: Get a list of venues that can be filtered by organizations
       operationId: getVenues
       parameters:
@@ -528,7 +528,7 @@ paths:
     post:
       tags:
         - venues
-      summary: Add a venue
+      summary: Add venue
       description: Creates a new venue
       operationId: createVenues
       requestBody:
@@ -557,7 +557,7 @@ paths:
     get:
       tags:
         - venues
-      summary: Get a venue
+      summary: Get venue
       description: Get venue details by a specific venue
       operationId: findVenueById
       parameters:
@@ -586,7 +586,7 @@ paths:
     patch:
       tags:
         - venues
-      summary: Patch a venue
+      summary: Update venue
       description: Change details about a venue
       operationId: updateVenueById
       parameters:
@@ -621,7 +621,7 @@ paths:
     delete:
       tags:
         - venues
-      summary: Delete a venue
+      summary: Delete venue
       description: Delete a specific venue
       operationId: deleteVenueById
       parameters:
@@ -645,7 +645,7 @@ paths:
     post:
       tags:
         - venues
-      summary: Add a wallet to venues
+      summary: Add wallet to venue
       description: Assign a wallet to a specific venue
       operationId: assignVenueWalletById
       parameters:
@@ -679,7 +679,7 @@ paths:
     delete:
       tags:
         - venues
-      summary: Remove wallet from venues
+      summary: Remove wallet from venue
       description: Remove wallet association from a specific venue
       operationId: removeVenueWalletById
       parameters:
@@ -703,7 +703,7 @@ paths:
     post:
       tags:
         - venues
-      summary: Add a tag to venues
+      summary: Add tag to venue
       description: Assign tag to a specific venue
       operationId: assignVenueTagById
       parameters:
@@ -738,7 +738,7 @@ paths:
     delete:
       tags:
         - venues
-      summary: Remove tag from venues
+      summary: Remove tag from venue
       description: Remove tags from a specific venue
       operationId: removeVenueTagById
       parameters:
@@ -797,7 +797,7 @@ paths:
     get:
       tags:
         - wallets
-      summary: Get a list of wallets
+      summary: Get list of wallets
       description: Get a list of wallets that can be filtered by organizations and/or venues and/or users
       operationId: findWallets
       parameters:
@@ -859,7 +859,7 @@ paths:
     post:
       tags:
         - wallets
-      summary: Add a wallet
+      summary: Add wallet
       description: Creates a new wallet
       operationId: createWallets
       requestBody:
@@ -891,7 +891,7 @@ paths:
     get:
       tags:
         - wallets
-      summary: Get a wallet
+      summary: Get wallet
       description: Get details from a specific wallet
       operationId: findWalletsById
       parameters:
@@ -920,7 +920,7 @@ paths:
     patch:
       tags:
         - wallets
-      summary: Patch a wallet
+      summary: Update wallet
       description: Change details about a specific wallet
       operationId: updateWalletById
       parameters:
@@ -954,7 +954,7 @@ paths:
     delete:
       tags:
         - wallets
-      summary: Delete a wallet
+      summary: Delete wallet
       description: Delete a specific wallet
       operationId: deleteWalletById
       parameters:
@@ -978,7 +978,7 @@ paths:
     get:
       tags:
         - organizations
-      summary: Get a list of organizations
+      summary: Get list of organizations
       description: Get a list of organizations
       operationId: findOrganizations
       parameters:
@@ -1064,7 +1064,7 @@ paths:
     post:
       tags:
         - organizations
-      summary: Create an organization
+      summary: Create organization
       description: Creates a new organization
       operationId: createOrganizations
       requestBody:
@@ -1093,7 +1093,7 @@ paths:
     get:
       tags:
         - organizations
-      summary: Get an organization
+      summary: Get organization
       description: Get details of a specific organization
       operationId: findOrganizationsById
       parameters:
@@ -1124,7 +1124,7 @@ paths:
     patch:
       tags:
         - organizations
-      summary: Patch an organization
+      summary: Update organization
       description: Update details of a specific organization
       operationId: updateOrganizationsById
       parameters:
@@ -1158,7 +1158,7 @@ paths:
     delete:
       tags:
         - organizations
-      summary: Delete an organization
+      summary: Delete organization
       description: Delete a specific organization
       operationId: deleteOrganizationsById
       parameters:
@@ -1182,7 +1182,7 @@ paths:
     get:
       tags:
         - members
-      summary: Get a list of members
+      summary: Get list of members
       description: Get a list of members
       operationId: findAllOrgMembers
       parameters:
@@ -1229,7 +1229,7 @@ paths:
     post:
       tags:
         - members
-      summary: Creates a member
+      summary: Create member
       description: Creates a new member of a specific organization
       operationId: findOrgMember
       requestBody:
@@ -1257,7 +1257,7 @@ paths:
     patch:
       tags:
         - members
-      summary: Update details of a member
+      summary: Update member
       description: Change details of a specific member of an organization
       operationId: updateOrgMember
       parameters:
@@ -1295,7 +1295,7 @@ paths:
     delete:
       tags:
         - members
-      summary: Delete an user member
+      summary: Delete member
       description: Deletes an user member of a specific organization
       operationId: deleteOrgMemberById
       parameters:
@@ -1324,7 +1324,7 @@ paths:
     get:
       tags:
         - users
-      summary: Get a list of users
+      summary: Get list of users
       description: Get a list of user that can be filtered by email and organization
       operationId: findUsers
       parameters:
@@ -1372,7 +1372,7 @@ paths:
     post:
       tags:
         - users
-      summary: Create an user
+      summary: Create user
       description: Creates an new user
       operationId: createUsers
       requestBody:
@@ -1401,7 +1401,7 @@ paths:
     get:
       tags:
         - users
-      summary: Get an user
+      summary: Get user
       description: Get details of a specific user
       operationId: findUsersById
       parameters:
@@ -1431,7 +1431,7 @@ paths:
     patch:
       tags:
         - users
-      summary: Update an user
+      summary: Update user
       description: Update details of a specific user
       operationId: updateUsersById
       parameters:
@@ -1464,7 +1464,7 @@ paths:
     delete:
       tags:
         - users
-      summary: Delete an user
+      summary: Delete user
       description: Delete a specific user
       operationId: deleteUserById
       parameters:
@@ -1498,7 +1498,7 @@ paths:
     post:
       tags:
         - users
-      summary: Add a wallet to users
+      summary: Add wallet to user
       description: Assign a wallet to a specific user
       operationId: assignUserWalletById
       parameters:
@@ -1532,7 +1532,7 @@ paths:
     patch:
       tags:
         - users
-      summary: Update a wallet to users
+      summary: Update wallet to user
       description: Change wallet information of a specific user
       operationId: updateUserWalletById
       parameters:
@@ -1566,7 +1566,7 @@ paths:
     delete:
       tags:
         - users
-      summary: Remove user wallet
+      summary: Remove wallet from user
       description: Remove wallet association from a specific user
       operationId: deleteUserWallet
       parameters:
@@ -1610,10 +1610,6 @@ components:
         - vendorsn
         - catalogId
       properties:
-        status:
-          type: string
-          example: active
-          description: The status of the device
         venueid:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
