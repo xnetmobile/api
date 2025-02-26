@@ -769,7 +769,7 @@ paths:
       tags:
         - venues
       summary: Get venue qualification
-      description: Associate the qualification of a specific venue
+      description: Get the qualification status of a venue
       operationId: venueQualified
       parameters:
         - name: id
