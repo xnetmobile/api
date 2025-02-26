@@ -205,7 +205,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeviceDto'
+              $ref: '#/components/schemas/DeviceDtoR'
       responses:
         '200':
           description: Successful
@@ -1610,10 +1610,6 @@ components:
         - vendorsn
         - catalogId
       properties:
-        status:
-          type: string
-          example: active
-          description: The status of the device
         venueid:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
