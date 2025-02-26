@@ -511,7 +511,7 @@ paths:
             properties:
               orgId:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
       responses:
         '200':
           description: Successful
@@ -525,14 +525,23 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /venues/org/{orgid}:
     post:
       tags:
         - venues
       summary: Add venue
-      description: Creates a new venue
-      operationId: createVenues
+      description: Creates a new venue for the specified organization.
+      operationId: createVenue
+      parameters:
+        - name: orgid
+          in: path
+          required: true
+          description: The organization ID
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
@@ -567,7 +576,7 @@ paths:
           description: The uuid of a venue
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
       responses:
         '200':
           description: Successful
@@ -596,7 +605,7 @@ paths:
           description: The uuid of a venue
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
       requestBody:
         content:
           application/json:
@@ -655,7 +664,7 @@ paths:
           description: The uuid of a venue
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
       requestBody:
         required: false
         content:
@@ -689,7 +698,7 @@ paths:
           description: The venue identifier
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
       responses:
         '204':
           description: Successful
@@ -713,7 +722,7 @@ paths:
           description: The venue identifier
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
       requestBody:
         required: true
         content:
@@ -748,7 +757,7 @@ paths:
           description: The uuid of a venue
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
       responses:
         '200':
           description: successful operation
@@ -778,7 +787,7 @@ paths:
           description: The venue identifier
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
       responses:
         '200':
           description: Successful
@@ -1003,7 +1012,7 @@ paths:
             properties:
               orgId:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
               status:
                 type: string
                 example: active
@@ -1207,7 +1216,7 @@ paths:
             properties:
               orgId:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
               userId:
                 type: string
                 example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
@@ -1240,7 +1249,7 @@ paths:
           description: The organization ID
           schema:
             type: string
-            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
       requestBody:
         required: true
         content:
@@ -1358,7 +1367,7 @@ paths:
             properties:
               orgId:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
               email:
                 type: string
                 example: user@xnet.company
@@ -1682,17 +1691,12 @@ components:
     VenueRequestBody:
       type: object
       required:
-        - orgId
         - name
         - fullAddress
         - venueDesc
         - venuephone
         - isp
       properties:
-        orgId:
-          type: string
-          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-          description: The uuid of the organization to which the venue belongs
         name:
           type: string
           example: XNET Campus
@@ -1737,7 +1741,7 @@ components:
       properties:
         id:
           type: string
-          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
           description: The uuid of a venue
         orgId:
           type: string
