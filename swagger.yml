@@ -1226,25 +1226,34 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /members/org/{orgid}:
     post:
       tags:
         - members
       summary: Create member
       description: Creates a new member of a specific organization
-      operationId: findOrgMember
+      operationId: createOrgMember
+      parameters:
+        - name: orgid
+          in: path
+          required: true
+          description: The organization ID
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/MembersDto'
       responses:
-        '200':
-          description: successful operation
+        '201':
+          description: Member successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MembersInactive'
+                $ref: '#/components/schemas/Members'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -2066,14 +2075,9 @@ components:
     MembersDto:
       type: object
       required:
-        - orgid
         - userid
         - orgrole
       properties:
-        orgid:
-          type: string
-          example: org-admin
-          description: The uuid of an organization
         userid:
           type: string
           example: org-admin
