@@ -1110,11 +1110,22 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  allOf:
-                    - $ref: '#/components/schemas/Organization'
-                    - $ref: '#/components/schemas/OrganizationUser'
+                allOf:
+                  - $ref: '#/components/schemas/Organization'
+                  - $ref: '#/components/schemas/OrganizationUser'
+              examples:
+                single_organization_response:
+                  summary: Response for a single organization
+                  value:
+                    id: "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d"
+                    status: "active"
+                    name: "XNET Main"
+                    phone: "123-456-7890"
+                    type: "community"
+                    notes: "Primary organization"
+                    createdat: "2025-01-03T14:54:29.204Z"
+                    updatedat: "2025-01-03T14:54:29.204Z"
+                    users: ["8186a947-8670-4cc9-be1a-79efd18defea"]
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
