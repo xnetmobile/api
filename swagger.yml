@@ -2027,6 +2027,10 @@ components:
           type: string
           example: 8186a947-8670-4cc9-be1a-79efd18defea
           description: The uuid of a user
+        signOnWallet:
+          type: string
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: The user wallet address
         status:
           type: string
           example: inactive
@@ -2078,6 +2082,10 @@ components:
           type: string
           example: 8186a947-8670-4cc9-be1a-79efd18defea
           description: The uuid of a user
+        signOnWallet:
+          type: string
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: The user wallet address
         status:
           type: string
           example: active
@@ -2132,6 +2140,10 @@ components:
           type: string
           example: 123-456-7654
           description: The phone of an user
+        signOnWallet:
+          type: string
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: The user wallet address
         email:
           type: string
           example: xnetuser@xnet.com
@@ -2155,6 +2167,10 @@ components:
     UserDtoO:
       type: object
       properties:
+        signOnWallet:
+          type: string
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: The user wallet address
         name:
           type: string
           example: XNET user
