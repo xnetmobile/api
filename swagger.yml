@@ -1505,98 +1505,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /users/:{id}/wallet:
-    post:
-      tags:
-        - users
-      summary: Add wallet to user
-      description: Assign a wallet to a specific user
-      operationId: assignUserWalletById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The user identifier
-          schema:
-            type: string
-            example: 8186a947-8670-4cc9-be1a-79efd18defea
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UsersWallet'
-      responses:
-        '201':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/UsersWalletDto'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    patch:
-      tags:
-        - users
-      summary: Update wallet to user
-      description: Change wallet information of a specific user
-      operationId: updateUserWalletById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The user identifier
-          schema:
-            type: string
-            example: 8186a947-8670-4cc9-be1a-79efd18defea
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UsersWallet'
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/UsersWalletDto'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    delete:
-      tags:
-        - users
-      summary: Remove wallet from user
-      description: Remove wallet association from a specific user
-      operationId: deleteUserWallet
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The user identifier
-          schema:
-            type: string
-            example: 8186a947-8670-4cc9-be1a-79efd18defea
-      responses:
-        '204':
-          description: Successful
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
@@ -2271,26 +2179,6 @@ components:
           type: string
           example: the top user
           description: Internal notes about a user
-    UsersWallet:
-      properties:
-        wallet:
-          properties:
-            address:
-              type: string
-              example: FwrmfMgbtFzMwVL62LVe1MP6QrtGv35q5g8gYkLXU2QL
-              description: The wallet address assigned to a user's account
-    UsersWalletDto:
-      properties:
-        wallet:
-          properties:
-            userid:
-              type: string
-              example: 8186a947-8670-4cc9-be1a-79efd18defea
-              description: The uuid of a user
-            address:
-              type: string
-              example: FwrmfMgbtFzMwVL62LVe1MP6QrtGv35q5g8gYkLXU2QL
-              description: The wallet address assigned to a user's account
     CatalogWifi:
       type: object
       properties:
