@@ -1003,7 +1003,7 @@ paths:
             properties:
               orgId:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
               status:
                 type: string
                 example: active
