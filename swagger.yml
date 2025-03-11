@@ -1596,7 +1596,7 @@ components:
         - name
         - fullAddress
         - venueDesc
-        - venuephone
+        - venuePhone
         - isp
       properties:
         orgId:
@@ -1615,7 +1615,7 @@ components:
           type: string
           example: PROFESSIONAL OFFICE
           description: The type of a venue
-        venuephone:
+        venuePhone:
           type: string
           example: 547-546-4567
           description: The phone of a venue
@@ -1632,11 +1632,11 @@ components:
           type: string
           example: XNET Campus
           description: The name of a venue
-        venuedesc:
+        venueDesc:
           type: string
           example: PROFESSIONAL OFFICE
           description: The description of a venue
-        venuephone:
+        venuePhone:
           type: string
           example: 547-546-4567
           description: The phone of a venue
@@ -1665,11 +1665,11 @@ components:
           type: string
           example: 1111 S Figueroa St, Los Angeles, CA 90015, USA
           description: The full address of a venue
-        venuedesc:
+        venueDesc:
           type: string
           example: PROFESSIONAL OFFICE
           description: The type of a venue
-        venuephone:
+        venuePhone:
           type: string
           example: 547-546-4567
           description: The phone of a venue
