@@ -98,7 +98,7 @@ paths:
         - name: filter
           in: query
           required: false
-          description: A pattern to filter for in organization id and/or venue id, i.e path?filter[orgID]=value&filter[venueId]=value
+          description: A pattern to filter for in organization id and/or venue id, i.e path?filter[orgId]=value&filter[venueId]=value
           schema:
             type: object
             properties:
@@ -997,7 +997,7 @@ paths:
         - name: filter
           in: query
           required: false
-          description: A pattern to filter for in organization identifier, i.e /organizations?filter[orgID]=value
+          description: A pattern to filter for in organization identifier, i.e /organizations?filter[orgId]=value
           schema:
             type: object
             properties:
