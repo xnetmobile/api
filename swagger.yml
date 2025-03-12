@@ -1881,15 +1881,15 @@ components:
         membership:
           type: object
           properties:
-            orgid:
+            orgId:
               type: string
               example: b17c00cd-0b17-421c-9c13-a440d1c7d6f8
               description: The UUID of the organization
-            userid:
+            userId:
               type: string
               example: 3f88ab54-7c98-4218-a067-72d8770b4bc5
               description: The UUID of the user
-            orgrole:
+            orgRole:
               type: string
               example: org-owner
               description: The Keycloak role assigned to the user
