@@ -1228,7 +1228,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Members'
+                  $ref: '#/components/schemas/MembersRes'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1262,32 +1262,18 @@ paths:
           $ref: '#/components/responses/Conflict'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /members/org/:{orgid}/user/:{userid}:
     patch:
       tags:
         - members
       summary: Update member
       description: Change details of a specific member of an organization
       operationId: updateOrgMember
-      parameters:
-        - name: orgid
-          in: path
-          required: true
-          schema:
-            type: string
-            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-        - name: userid
-          in: path
-          required: true
-          schema:
-            type: string
-            example: 8186a947-8670-4cc9-be1a-79efd18defea
       requestBody:
         required: false
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MembersDtoO'
+              $ref: '#/components/schemas/MembersDto'
       responses:
         '200':
           description: successful operation
@@ -1301,6 +1287,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /members/org/:{orgId}/user/:{userId}:
     delete:
       tags:
         - members
@@ -1308,13 +1295,13 @@ paths:
       description: Deletes an user member of a specific organization
       operationId: deleteOrgMemberById
       parameters:
-        - name: orgid
+        - name: orgId
           in: path
           required: true
           schema:
             type: string
             example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-        - name: userid
+        - name: userId
           in: path
           required: true
           schema:
@@ -1838,18 +1825,6 @@ components:
             - "8186a947-8670-4cc9-be1a-79efd18defea"
             - "0cd6b14d-024c-4bbe-821c-1cff032fcf88"
           description: The members of an organization
-    OrganizationSingleUser:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            example: "8186a947-8670-4cc9-be1a-79efd18defea"
-            description: The members of an organization
-          example:
-            - "8186a947-8670-4cc9-be1a-79efd18defea"
-          description: The members of an organization
     CreateOrganization:
       type: object
       properties:
@@ -1893,15 +1868,15 @@ components:
         membership:
           type: object
           properties:
-            orgid:
+            orgId:
               type: string
               example: b17c00cd-0b17-421c-9c13-a440d1c7d6f8
               description: The UUID of the organization
-            userid:
+            userId:
               type: string
               example: 3f88ab54-7c98-4218-a067-72d8770b4bc5
               description: The UUID of the user
-            orgrole:
+            orgRole:
               type: string
               example: org-owner
               description: The Keycloak role assigned to the user
@@ -1991,19 +1966,148 @@ components:
         notes:
           type: string
           example: best org ever
-          description: Internal notes for additional context regarding the organization          
+          description: Internal notes for additional context regarding the organization     
+    MembersRes:
+      type: object
+      properties:
+        orgId:
+          type: string
+          example: "4f01bee2-d3aa-4cf2-8d59-a64de1125876"
+          description: "The UUID of an organization"
+        userId:
+          type: string
+          example: "2b07323f-3911-442c-851a-bcc9bd7503c0"
+          description: "The UUID of a user"
+        orgRole:
+          type: string
+          example: "org-owner"
+          description: "The role of the member within the organization"
+        status:
+          type: string
+          example: "Active"
+          description: "The status of the member"
+        notes:
+          type: string
+          nullable: true
+          example: first org member is always org-owner
+          description: "Internal notes providing additional context about the member"
+        createdat:
+          type: string
+          format: date-time
+          example: "2025-03-06T14:58:30.494Z"
+          description: "The date and time the member was created"
+        updatedat:
+          type: string
+          format: date-time
+          example: "2025-03-06T14:58:30.494Z"
+          description: "The date and time the member was updated"
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "4f01bee2-d3aa-4cf2-8d59-a64de1125876"
+              description: "Organization UUID"
+            status:
+              type: string
+              example: "active"
+              description: "The status of the organization"
+            name:
+              type: string
+              example: "nick@carpinito.id"
+              description: "The name or email identifier of the organization"
+            phone:
+              type: string
+              nullable: true
+              example: 123-456-7890
+              description: "Phone number associated with the organization"
+            type:
+              type: string
+              example: "community"
+              description: "The type of organization"
+            notes:
+              type: string
+              nullable: true
+              example: best org ever
+              description: "Additional notes regarding the organization"
+            createdat:
+              type: string
+              format: date-time
+              example: "2025-03-06T14:59:17.087Z"
+              description: "Timestamp when the organization was created"
+            updatedat:
+              type: string
+              format: date-time
+              example: "2025-03-12T13:13:13.370Z"
+              description: "Timestamp when the organization was updated"
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "2b07323f-3911-442c-851a-bcc9bd7503c0"
+              description: "User UUID"
+            status:
+              type: string
+              example: "active"
+              description: "The status of the user"
+            email:
+              type: string
+              example: "nick@carpinito.id"
+              description: "User email address"
+            name:
+              type: string
+              example: "nick@carpinito.id"
+              description: "User's name"
+            phone:
+              type: string
+              example: "123-876-7890"
+              description: "User phone number"
+            discord:
+              type: string
+              example: "meta.light"
+              description: "User's Discord handle"
+            telegram:
+              type: string
+              example: "@xnetsoldier"
+              description: "User's Telegram handle"
+            notes:
+              type: string
+              example: "notes about user"
+              description: "Additional notes for the user"
+            socials:
+              type: array
+              items:
+                type: string
+                example: "https://www.linkedin.com/company/xnetmobile"
+              description: "List of social media identifiers"
+            signonwallet:
+              type: string
+              nullable: true
+              example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+              description: "User's sign-on wallet address"
+            createdat:
+              type: string
+              format: date-time
+              example: "2024-05-03T19:12:11.231Z"
+              description: "Timestamp when the user was created"
+            updatedat:
+              type: string
+              format: date-time
+              example: "2024-05-03T19:12:11.231Z"
+              description: "Timestamp when the user was updated"
     Members:
       type: object
       properties:
-        orgid:
+        orgId:
           type: string
           example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The uuid of an organization
-        userid:
+        userId:
           type: string
           example: 8186a947-8670-4cc9-be1a-79efd18defea
           description: The uuid of a user
-        orgrole:
+        orgRole:
           type: string
           example: org-admin
           description: This field defines the role of a member within the organization
@@ -2026,15 +2130,15 @@ components:
     MembersInactive:
       type: object
       properties:
-        orgid:
+        orgId:
           type: string
           example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The uuid of an organization
-        userid:
+        userId:
           type: string
           example: 8186a947-8670-4cc9-be1a-79efd18defea
           description: The uuid of a user
-        orgrole:
+        orgRole:
           type: string
           example: org-admin
           description: This field defines the role of a member within the organization
@@ -2057,19 +2161,19 @@ components:
     MembersDto:
       type: object
       required:
-        - orgid
-        - userid
-        - orgrole
+        - orgId
+        - userId
+        - orgRole
       properties:
-        orgid:
+        orgId:
           type: string
-          example: org-admin
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The uuid of an organization
-        userid:
+        userId:
           type: string
-          example: org-admin
+          example: 8186a947-8670-4cc9-be1a-79efd18defea
           description: The uuid of a user
-        orgrole:
+        orgRole:
           type: string
           example: org-admin
           description: This field defines the role of a member within the organization. 
@@ -2422,3 +2526,4 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorDto'
+    ServiceUnavailable:
