@@ -1983,15 +1983,15 @@ components:
     MembersRes:
       type: object
       properties:
-        orgid:
+        orgId:
           type: string
           example: "4f01bee2-d3aa-4cf2-8d59-a64de1125876"
           description: "The UUID of an organization"
-        userid:
+        userId:
           type: string
           example: "2b07323f-3911-442c-851a-bcc9bd7503c0"
           description: "The UUID of a user"
-        orgrole:
+        orgRole:
           type: string
           example: "org-owner"
           description: "The role of the member within the organization"
@@ -2178,15 +2178,15 @@ components:
         - userid
         - orgrole
       properties:
-        orgid:
+        orgId:
           type: string
           example: org-admin
           description: The uuid of an organization
-        userid:
+        userId:
           type: string
           example: org-admin
           description: The uuid of a user
-        orgrole:
+        orgRole:
           type: string
           example: org-admin
           description: This field defines the role of a member within the organization. 
