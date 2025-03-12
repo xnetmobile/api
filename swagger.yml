@@ -98,7 +98,7 @@ paths:
         - name: filter
           in: query
           required: false
-          description: A pattern to filter for in organization id and/or venue id, i.e path?filter[orgID]=value&filter[venueId]=value
+          description: A pattern to filter for in organization id and/or venue id, i.e path?filter[orgId]=value&filter[venueId]=value
           schema:
             type: object
             properties:
@@ -997,13 +997,13 @@ paths:
         - name: filter
           in: query
           required: false
-          description: A pattern to filter for in organization identifier, i.e /organizations?filter[orgID]=value
+          description: A pattern to filter for in organization identifier, i.e /organizations?filter[orgId]=value
           schema:
             type: object
             properties:
               orgId:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
               status:
                 type: string
                 example: active
@@ -1078,9 +1078,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/Organization'
-                  - $ref: '#/components/schemas/OrganizationSingleUser'
+                $ref: '#/components/schemas/CreateOrganization'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1852,6 +1850,80 @@ components:
           example:
             - "8186a947-8670-4cc9-be1a-79efd18defea"
           description: The members of an organization
+    CreateOrganization:
+      type: object
+      properties:
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              example: b17c00cd-0b17-421c-9c13-a440d1c7d6f8
+              description: The UUID of the organization
+            status:
+              type: string
+              example: Active
+              description: The status of the organization
+            name:
+              type: string
+              example: EvilCorppp
+              description: The name of the organization
+            phone:
+              type: string
+              example: 666-666-6666
+              description: The phone number of the organization
+            type:
+              type: string
+              example: community
+              description: The type of the organization  
+            notes:
+              type: string
+              example: the evilest corp
+              description: Internal notes for the organization
+            createdat:
+              type: string
+              format: date-time
+              example: 2025-03-11T22:12:17.829Z
+              description: The date and time the organization was created
+            updatedat:
+              type: string
+              format: date-time
+              example: 2025-03-11T22:12:17.829Z
+              description: The date and time the organization was updated
+        membership:
+          type: object
+          properties:
+            orgid:
+              type: string
+              example: b17c00cd-0b17-421c-9c13-a440d1c7d6f8
+              description: The UUID of the organization
+            userid:
+              type: string
+              example: 3f88ab54-7c98-4218-a067-72d8770b4bc5
+              description: The UUID of the user
+            orgrole:
+              type: string
+              example: org-owner
+              description: The Keycloak role assigned to the user
+            status:
+              type: string
+              example: pending
+              description: The status of the membership
+            notes:
+              type: string
+              nullable: true
+              example: first org member is always org-owner
+              description: Additional notes regarding the membership
+            createdat:
+              type: string
+              format: date-time
+              example: 2025-03-11T22:12:18.181Z
+              description: The date and time the membership was created
+            updatedat:
+              type: string
+              format: date-time
+              example: 2025-03-11T22:12:18.181Z
+              description: The date and time the membership was updated
     Organization:
       type: object
       properties:
