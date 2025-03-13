@@ -2250,10 +2250,6 @@ components:
     User:
       type: object
       properties:
-        orgId:
-          type: string
-          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-          description: The uuid of an organization
         id:
           type: string
           example: 8186a947-8670-4cc9-be1a-79efd18defea
