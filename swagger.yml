@@ -824,11 +824,11 @@ paths:
                 type: string
                 example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
                 description: The uuid of an organization
-              venueId:
+              wallet:
                 type: string
                 example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
                 description: The uuid of a venue
-              userId:
+              venueId:
                 type: string
                 example: cdff0d7c-599a-4221-a99b-8b2f15bb110a
                 description: The uuid of a user
@@ -1514,7 +1514,7 @@ components:
         - vendorsn
         - catalogId
       properties:
-        venueid:
+        venueId:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
           description: The uuid of the device's venue
@@ -1538,7 +1538,7 @@ components:
           type: string
           example: active
           description: The status of the device
-        venueid:
+        venueId:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
           description: The uuid of the device's venue
@@ -1680,7 +1680,7 @@ components:
       properties:
         wallet:
           properties:
-            venueid:
+            venueId:
               type: string
               example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
               description: The uuid of a venue
