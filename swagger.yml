@@ -844,12 +844,6 @@ paths:
                     wallets:
                       allOf:
                         - $ref: '#/components/schemas/Wallet'
-                    total:
-                      type: integer
-                      example: 1
-                    page:
-                      type: integer
-                      example: 1
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1753,18 +1747,35 @@ components:
       properties:
         id:
           type: string
-          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
-          description: The address of a wallet
-        venueId:
-          type: array
-          items:
-            type: string
-          example: ["9fb083a7-a310-4a9a-8a26-cd78cdd35e04"]
-          description: An array of venue uuids associated with the wallet
-        userId:
+          example: bd121977-6eef-46f4-ac5e-6342c86edef6
+          description: Unique identifier for the wallet
+        wallet:
           type: string
-          example: cdff0d7c-599a-4221-a99b-8b2f15bb110a
-          description: The user uuid associated with this wallet
+          example: 348gQf1b1tX8Kz7pL5vQz1W8m2n3j4k5P6q7r8s9t0u
+          description: Wallet address or identifier
+        orgId:
+          type: string
+          example: 48739432-c72a-409f-b56c-88782c41c626
+          description: Organization identifier associated with the wallet
+        name:
+          type: string
+          nullable: true
+          example: XNWallet
+          description: Optional name field (can be null)
+        notes:
+          type: string
+          example: cool note
+          description: Additional notes about the wallet
+        createdat:
+          type: string
+          format: date-time
+          example: "2025-03-13T23:38:34.193Z"
+          description: Timestamp when the wallet was created
+        updatedat:
+          type: string
+          format: date-time
+          example: "2025-03-13T23:38:34.193Z"
+          description: Timestamp when the wallet was last updated
     WalletId:
       type: object
       properties:
@@ -2174,17 +2185,6 @@ components:
           example: 8186a947-8670-4cc9-be1a-79efd18defea
           description: The uuid of a user
         orgRole:
-          type: string
-          example: org-admin
-          description: This field defines the role of a member within the organization. 
-        notes:
-          type: string
-          example: best admin
-          description: Internal notes for additional context regarding the member
-    MembersDtoO:
-      type: object
-      properties:
-        orgrole:
           type: string
           example: org-admin
           description: This field defines the role of a member within the organization. 
