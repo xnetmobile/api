@@ -866,10 +866,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/WalletId'
-                  - $ref: '#/components/schemas/WalletDto'
-                  - $ref: '#/components/schemas/WalletDateDto'
+                  $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
