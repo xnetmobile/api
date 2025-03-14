@@ -884,11 +884,11 @@ paths:
       operationId: findWalletsById
       parameters:
         - name: id
-          example: bd121977-6eef-46f4-ac5e-6342c86edef6
           in: path
           required: true
-          description: The address of a wallet
+          description: The wallet uuid
           schema:
+            example: bd121977-6eef-46f4-ac5e-6342c86edef6
             type: string
       responses:
         '200':
@@ -911,11 +911,12 @@ paths:
       operationId: updateWalletById
       parameters:
         - name: id
+          description: The wallet uuid
           in: path
           required: true
           schema:
+            example: bd121977-6eef-46f4-ac5e-6342c86edef6
             type: string
-            description: The address of a wallet
       requestBody:
         content:
           application/json:
@@ -945,11 +946,12 @@ paths:
       operationId: deleteWalletById
       parameters:
         - name: id
+          description: The wallet uuid
           in: path
           required: true
           schema:
             type: string
-            description: The address of a wallet
+            example: bd121977-6eef-46f4-ac5e-6342c86edef6
       responses:
         '204':
           description: Successful
