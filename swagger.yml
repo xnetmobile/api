@@ -2523,3 +2523,8 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorDto'
     ServiceUnavailable:
+      description: Service is temporarily unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
