@@ -884,6 +884,7 @@ paths:
       operationId: findWalletsById
       parameters:
         - name: id
+          example: bd121977-6eef-46f4-ac5e-6342c86edef6
           in: path
           required: true
           description: The address of a wallet
@@ -895,10 +896,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/WalletId'
-                  - $ref: '#/components/schemas/WalletDto'
-                  - $ref: '#/components/schemas/Wallet'
+                  $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
