@@ -3,7 +3,7 @@ info:
   title: XNET API
   description: |-
     This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.1 is unstable and subject to breaking changes. Please wait for v1.0 before building with this API.
-  version: 0.1.0
+  version: 0.1.1
 servers:
   - url: https://api.xnet.company
 security:
@@ -824,32 +824,23 @@ paths:
                 type: string
                 example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
                 description: The uuid of an organization
+              wallet:
+                type: string
+                example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+                description: The uuid of a venue
               venueId:
                 type: string
                 example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
-                description: The uuid of a venue
-              userId:
-                type: string
-                example: cdff0d7c-599a-4221-a99b-8b2f15bb110a
                 description: The uuid of a user
       responses:
         '200':
           description: Successful
           content:
-            application/json:
+            application/json: 
               schema:
                 type: array
                 items:
-                  properties:
-                    wallets:
-                      allOf:
-                        - $ref: '#/components/schemas/Wallet'
-                    total:
-                      type: integer
-                      example: 1
-                    page:
-                      type: integer
-                      example: 1
+                  $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -875,10 +866,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/WalletId'
-                  - $ref: '#/components/schemas/WalletDto'
-                  - $ref: '#/components/schemas/WalletDateDto'
+                  $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -898,8 +886,9 @@ paths:
         - name: id
           in: path
           required: true
-          description: The address of a wallet
+          description: The wallet uuid
           schema:
+            example: bd121977-6eef-46f4-ac5e-6342c86edef6
             type: string
       responses:
         '200':
@@ -907,10 +896,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/WalletId'
-                  - $ref: '#/components/schemas/WalletDto'
-                  - $ref: '#/components/schemas/Wallet'
+                  $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -925,11 +911,12 @@ paths:
       operationId: updateWalletById
       parameters:
         - name: id
+          description: The wallet uuid
           in: path
           required: true
           schema:
+            example: bd121977-6eef-46f4-ac5e-6342c86edef6
             type: string
-            description: The address of a wallet
       requestBody:
         content:
           application/json:
@@ -959,11 +946,12 @@ paths:
       operationId: deleteWalletById
       parameters:
         - name: id
+          description: The wallet uuid
           in: path
           required: true
           schema:
             type: string
-            description: The address of a wallet
+            example: bd121977-6eef-46f4-ac5e-6342c86edef6
       responses:
         '204':
           description: Successful
@@ -1514,7 +1502,7 @@ components:
         - vendorsn
         - catalogId
       properties:
-        venueid:
+        venueId:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
           description: The uuid of the device's venue
@@ -1538,7 +1526,7 @@ components:
           type: string
           example: active
           description: The status of the device
-        venueid:
+        venueId:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
           description: The uuid of the device's venue
@@ -1680,7 +1668,7 @@ components:
       properties:
         wallet:
           properties:
-            venueid:
+            venueId:
               type: string
               example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
               description: The uuid of a venue
@@ -1753,24 +1741,41 @@ components:
       properties:
         id:
           type: string
-          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
-          description: The address of a wallet
-        venueId:
-          type: array
-          items:
-            type: string
-          example: ["9fb083a7-a310-4a9a-8a26-cd78cdd35e04"]
-          description: An array of venue uuids associated with the wallet
-        userId:
+          example: bd121977-6eef-46f4-ac5e-6342c86edef6
+          description: Unique identifier for the wallet
+        wallet:
           type: string
-          example: cdff0d7c-599a-4221-a99b-8b2f15bb110a
-          description: The user uuid associated with this wallet
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          description: Wallet address or identifier
+        orgId:
+          type: string
+          example: 48739432-c72a-409f-b56c-88782c41c626
+          description: Organization identifier associated with the wallet
+        name:
+          type: string
+          nullable: true
+          example: XNWallet
+          description: Optional name field (can be null)
+        notes:
+          type: string
+          example: cool note
+          description: Additional notes about the wallet
+        createdat:
+          type: string
+          format: date-time
+          example: "2025-03-13T23:38:34.193Z"
+          description: Timestamp when the wallet was created
+        updatedat:
+          type: string
+          format: date-time
+          example: "2025-03-13T23:38:34.193Z"
+          description: Timestamp when the wallet was last updated
     WalletId:
       type: object
       properties:
-        id:
+        orgId:
           type: string
-          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The address of a wallet
     WalletDto:
       type: object
@@ -1789,7 +1794,7 @@ components:
         - id
         - name
       properties:
-        id:
+        wallet:
           type: string
           example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
           description: The address of a wallet
@@ -2181,17 +2186,6 @@ components:
           type: string
           example: best admin
           description: Internal notes for additional context regarding the member
-    MembersDtoO:
-      type: object
-      properties:
-        orgrole:
-          type: string
-          example: org-admin
-          description: This field defines the role of a member within the organization. 
-        notes:
-          type: string
-          example: best admin
-          description: Internal notes for additional context regarding the member
     UserInactive:
       type: object
       properties:
@@ -2523,3 +2517,8 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorDto'
     ServiceUnavailable:
+      description: Service is temporarily unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
