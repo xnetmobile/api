@@ -826,24 +826,21 @@ paths:
                 description: The uuid of an organization
               wallet:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
                 description: The uuid of a venue
               venueId:
                 type: string
-                example: cdff0d7c-599a-4221-a99b-8b2f15bb110a
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
                 description: The uuid of a user
       responses:
         '200':
           description: Successful
           content:
-            application/json:
+            application/json: 
               schema:
                 type: array
                 items:
-                  properties:
-                    wallets:
-                      allOf:
-                        - $ref: '#/components/schemas/Wallet'
+                  $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1751,7 +1748,7 @@ components:
           description: Unique identifier for the wallet
         wallet:
           type: string
-          example: 348gQf1b1tX8Kz7pL5vQz1W8m2n3j4k5P6q7r8s9t0u
+          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
           description: Wallet address or identifier
         orgId:
           type: string
@@ -1779,9 +1776,9 @@ components:
     WalletId:
       type: object
       properties:
-        id:
+        orgId:
           type: string
-          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The address of a wallet
     WalletDto:
       type: object
@@ -1800,7 +1797,7 @@ components:
         - id
         - name
       properties:
-        id:
+        wallet:
           type: string
           example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
           description: The address of a wallet
