@@ -2296,6 +2296,7 @@ components:
       type: object
       required:
         - name
+        - phone
         - email
       properties:
         name:
@@ -2340,7 +2341,7 @@ components:
         name:
           type: string
           example: XNET user
-          description: The name of an user
+          description: The first and last name of the user
         phone:
           type: string
           example: 123-456-7654
