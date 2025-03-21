@@ -1576,6 +1576,10 @@ components:
           type: string
           example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The uuid of the organization to which the venue belongs
+        walletId:
+          type: string
+          example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+          description: The uuid of the wallet to which the venue belongs
         name:
           type: string
           example: XNET Campus
@@ -1626,6 +1630,10 @@ components:
           type: string
           example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The uuid of the organization to which the venue belongs
+        walletId:
+          type: string
+          example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+          description: The uuid of the wallet to which the venue belongs
         name:
           type: string
           example: XNET Campus
@@ -1672,10 +1680,10 @@ components:
               type: string
               example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
               description: The uuid of a venue
-            address:
+            walletId:
               type: string
-              example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
-              description: The wallet address associated with the venue
+              example: bd121977-6eef-46f4-ac5e-6342c86edef6
+              description: The wallet id associated with the venue
     IspDtoR:
       type: object
       required:
