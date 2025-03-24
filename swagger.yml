@@ -1498,10 +1498,15 @@ components:
     DeviceDtoR:
       type: object
       required:
+        - orgId
         - macAddress
         - vendorsn
         - catalogId
       properties:
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of the device's venue
         venueId:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
@@ -1529,6 +1534,10 @@ components:
         venueId:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
+          description: The uuid of the device's venue
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The uuid of the device's venue
         macAddress:
           type: string
