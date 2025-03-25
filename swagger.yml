@@ -1017,7 +1017,7 @@ paths:
                       "notes": "Primary organization",
                       "createdat": "2025-01-03T14:54:29.204Z",
                       "updatedat": "2025-01-03T14:54:29.204Z",
-                      "users": [ "8186a947-8670-4cc9-be1a-79efd18defea" ]
+                      "users": [ "user@xnet.company" ]
                     }
                   ]
                 filtered_response:
@@ -1032,7 +1032,7 @@ paths:
                       "notes": "Branch organization",
                       "createdat": "2025-01-03T14:54:29.204Z",
                       "updatedat": "2025-01-03T14:54:29.204Z",
-                      "users": [ "0cd6b14d-024c-4bbe-821c-1cff032fcf88" ]
+                      "users": [ "user@xnet.company" ]
                     }
                   ]
 
@@ -1105,7 +1105,7 @@ paths:
                     notes: "Primary organization"
                     createdat: "2025-01-03T14:54:29.204Z"
                     updatedat: "2025-01-03T14:54:29.204Z"
-                    users: ["8186a947-8670-4cc9-be1a-79efd18defea"]
+                    users: ["user@xnet.company"]
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1817,17 +1817,6 @@ components:
           type: string
           example: notes
           description: The notes of a wallet
-    WalletDateDto:
-      type: object
-      properties:
-        createdat:
-          type: string
-          example: 2025-01-03T14:54:29.204Z
-          description: The date and time a wallet was created
-        updatedat:
-          type: string
-          example: 2025-01-03T14:54:29.204Z
-          description: The date and time a wallet was updated
     OrganizationUser:
       type: object
       properties:
