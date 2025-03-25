@@ -1364,7 +1364,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/UserInactive'
+                  - $ref: '#/components/schemas/UserPost'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -2180,10 +2180,6 @@ components:
           type: string
           example: www.linkedin.com/company/xnetmobile
           description: The social media link of a user
-        notes:
-          type: string
-          example: the top user
-          description: Internal notes about a user
         createdat:
           type: string
           example: 2025-01-03T14:54:29.204Z
@@ -2231,10 +2227,6 @@ components:
           type: string
           example: www.linkedin.com/company/xnetmobile
           description: The social media link of a user
-        notes:
-          type: string
-          example: the top user
-          description: Internal notes about a user
         createdat:
           type: string
           example: 2025-01-03T14:54:29.204Z
@@ -2243,6 +2235,111 @@ components:
           type: string
           example: 2025-01-03T14:54:29.204Z
           description: The date and time an user was updated
+    UserPost:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: "8186a947-8670-4cc9-be1a-79efd18defea"
+            signonwallet:
+              type: string
+              nullable: true
+              example: "HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH"
+            status:
+              type: string
+              example: "inactive"
+            name:
+              type: string
+              example: "XNET user"
+            phone:
+              type: string
+              example: "123-456-7654"
+            email:
+              type: string
+              format: email
+              example: "xnetuser@xnet.com"
+            discord:
+              type: string
+              nullable: true
+              example: "xnetsoldier"
+            telegram:
+              type: string
+              nullable: true
+              example: "@xnetsoldier"
+            socials:
+              type: array
+              items:
+                type: string
+              example: [www.linkedin.com/company/xnetmobile]
+            createdat:
+              type: string
+              format: date-time
+              example: "2025-03-25T23:33:48.780Z"
+            updatedat:
+              type: string
+              format: date-time
+              example: "2025-03-25T23:33:48.780Z"
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d"
+            status:
+              type: string
+              example: "active"
+            name:
+              type: string
+              example: "XNET Main"
+            phone:
+              type: string
+              nullable: true
+              example: "123-456-7890"
+            type:
+              type: string
+              example: "community"
+            createdat:
+              type: string
+              format: date-time
+              example: "2025-03-25T23:33:48.782Z"
+            updatedat:
+              type: string
+              format: date-time
+              example: "2025-03-25T23:33:48.782Z"
+        membership:
+          type: object
+          properties:
+            orgId:
+              type: string
+              format: uuid
+              example: "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d"
+            userId:
+              type: string
+              format: uuid
+              example: "8186a947-8670-4cc9-be1a-79efd18defea"
+            orgRole:
+              type: string
+              example: "org-owner"
+            status:
+              type: string
+              example: "active"
+            createdat:
+              type: string
+              format: date-time
+              example: "2025-03-25T23:33:48.784Z"
+            updatedat:
+              type: string
+              format: date-time
+              example: "2025-03-25T23:33:48.784Z"
+      required:
+        - user
+        - organization
+        - membership
     UserDto:
       type: object
       required:
@@ -2278,10 +2375,6 @@ components:
           type: string
           example: www.linkedin.com/company/xnetmobile
           description: The social media link of a user
-        notes:
-          type: string
-          example: the top user
-          description: Internal notes about a user
     UserDtoO:
       type: object
       properties:
@@ -2309,10 +2402,6 @@ components:
           type: string
           example: www.linkedin.com/company/xnetmobile
           description: The social media link of a user
-        notes:
-          type: string
-          example: the top user
-          description: Internal notes about a user
     CatalogWifi:
       type: object
       properties:
