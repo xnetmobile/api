@@ -3,7 +3,7 @@ info:
   title: XNET API
   description: |-
     This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.1 is unstable and subject to breaking changes. Please wait for v1.0 before building with this API.
-  version: 0.1.1
+  version: 0.1.2
 servers:
   - url: https://api.xnet.company
 security:
