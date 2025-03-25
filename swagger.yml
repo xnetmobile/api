@@ -1968,11 +1968,6 @@ components:
           type: string
           example: "Active"
           description: "The status of the member"
-        notes:
-          type: string
-          nullable: true
-          example: first org member is always org-owner
-          description: "Internal notes providing additional context about the member"
         createdat:
           type: string
           format: date-time
@@ -2007,11 +2002,6 @@ components:
               type: string
               example: "community"
               description: "The type of organization"
-            notes:
-              type: string
-              nullable: true
-              example: best org ever
-              description: "Additional notes regarding the organization"
             createdat:
               type: string
               format: date-time
@@ -2053,10 +2043,6 @@ components:
               type: string
               example: "@xnetsoldier"
               description: "User's Telegram handle"
-            notes:
-              type: string
-              example: "notes about user"
-              description: "Additional notes for the user"
             socials:
               type: array
               items:
@@ -2097,10 +2083,6 @@ components:
           type: string
           example: active
           description: The status of a member
-        notes:
-          type: string
-          example: best admin
-          description: Internal notes for additional context regarding the member
         createdat:
           type: string
           example: 2025-01-03T14:54:29.204Z
@@ -2128,10 +2110,6 @@ components:
           type: string
           example: inactive
           description: The status of a member
-        notes:
-          type: string
-          example: best admin
-          description: Internal notes for additional context regarding the member
         createdat:
           type: string
           example: 2025-01-03T14:54:29.204Z
@@ -2159,10 +2137,6 @@ components:
           type: string
           example: org-admin
           description: This field defines the role of a member within the organization. 
-        notes:
-          type: string
-          example: best admin
-          description: Internal notes for additional context regarding the member
     UserInactive:
       type: object
       properties:
