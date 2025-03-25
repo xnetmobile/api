@@ -1567,10 +1567,10 @@ components:
           type: string
           example: 20 MHz
           description: The channel configured on the device
-        bandWith:
+        bandWidth:
           type: string
           example: 37.774929
-          description: The bandWith configured on the device
+          description: The bandwidth configured on the device
     VenueRequestBody:
       type: object
       required:
@@ -1699,7 +1699,7 @@ components:
         - name
         - class
         - connection
-        - bandwith
+        - bandwidth
         - ispSecurity
       properties:
         name:
@@ -1714,10 +1714,10 @@ components:
           type: string
           example: Fiber
           description: The connection of a isp
-        bandwith:
+        bandwidth:
           type: integer
           example: 500-999
-          description: The bandwith of a isp
+          description: The bandwidth of a isp
         ispSecurity:
           type: array
           items:
@@ -1741,10 +1741,10 @@ components:
           type: string
           example: Fiber
           description: The connection of a isp
-        bandwith:
+        bandwidth:
           type: integer
           example: 500-999
-          description: The bandwith of a isp
+          description: The bandwidth of a isp
         ispSecurity:
           type: array
           items:
