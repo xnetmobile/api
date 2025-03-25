@@ -1101,7 +1101,6 @@ paths:
                     name: "XNET Main"
                     phone: "123-456-7890"
                     type: "community"
-                    notes: "Primary organization"
                     createdat: "2025-01-03T14:54:29.204Z"
                     updatedat: "2025-01-03T14:54:29.204Z"
                     users: ["user@xnet.company"]
@@ -1855,10 +1854,6 @@ components:
               type: string
               example: community
               description: The type of the organization  
-            notes:
-              type: string
-              example: the evilest corp
-              description: Internal notes for the organization
             createdat:
               type: string
               format: date-time
@@ -1888,11 +1883,6 @@ components:
               type: string
               example: pending
               description: The status of the membership
-            notes:
-              type: string
-              nullable: true
-              example: first org member is always org-owner
-              description: Additional notes regarding the membership
             createdat:
               type: string
               format: date-time
@@ -1926,10 +1916,6 @@ components:
           type: string
           example: community
           description: The type of an organization
-        notes:
-          type: string
-          example: best org ever
-          description: Internal notes for additional context regarding the organization
         createdat:
           type: string
           example: 2025-01-03T14:54:29.204Z
@@ -1952,10 +1938,6 @@ components:
           type: string
           example: 123-456-7890
           description: The phone of an organization
-        notes:
-          type: string
-          example: best org ever
-          description: Internal notes for additional context regarding the organization
     OrganizationDtoO:
       type: object
       properties:
@@ -1967,10 +1949,6 @@ components:
           type: string
           example: 123-456-7890
           description: The phone of an organization
-        notes:
-          type: string
-          example: best org ever
-          description: Internal notes for additional context regarding the organization     
     MembersRes:
       type: object
       properties:
