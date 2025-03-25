@@ -1014,7 +1014,6 @@ paths:
                       "name": "XNET Main",
                       "phone": "123-456-7890",
                       "type": "community",
-                      "notes": "Primary organization",
                       "createdat": "2025-01-03T14:54:29.204Z",
                       "updatedat": "2025-01-03T14:54:29.204Z",
                       "users": [ "user@xnet.company" ]
