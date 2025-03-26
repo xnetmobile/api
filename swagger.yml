@@ -1028,7 +1028,6 @@ paths:
                       "name": "XNET Branch",
                       "phone": "123-456-7891",
                       "type": "community",
-                      "notes": "Branch organization",
                       "createdat": "2025-01-03T14:54:29.204Z",
                       "updatedat": "2025-01-03T14:54:29.204Z",
                       "users": [ "user@xnet.company" ]
@@ -1765,10 +1764,6 @@ components:
           nullable: true
           example: XNWallet
           description: Optional name field (can be null)
-        notes:
-          type: string
-          example: cool note
-          description: Additional notes about the wallet
         createdat:
           type: string
           format: date-time
@@ -1793,10 +1788,6 @@ components:
           type: string
           example: wallet name
           description: The name of a wallet
-        notes:
-          type: string
-          example: notes
-          description: The notes of a wallet
     WalletDtoR:
       type: object
       required:
@@ -1811,10 +1802,6 @@ components:
           type: string
           example: wallet name
           description: The name of a wallet
-        notes:
-          type: string
-          example: notes
-          description: The notes of a wallet
     OrganizationUser:
       type: object
       properties:
