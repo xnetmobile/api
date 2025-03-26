@@ -2124,57 +2124,6 @@ components:
           type: string
           example: org-admin
           description: This field defines the role of a member within the organization. 
-    UserInactive:
-      type: object
-      properties:
-        orgId:
-          type: string
-          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-          description: The uuid of an organization
-        id:
-          type: string
-          example: 8186a947-8670-4cc9-be1a-79efd18defea
-          description: The uuid of a user
-        signOnWallet:
-          type: string
-          example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
-          description: The user wallet address
-        status:
-          type: string
-          example: inactive
-          description: The status of an user
-        name:
-          type: string
-          example: XNET user
-          description: The name of an user
-        phone:
-          type: string
-          example: 123-456-7654
-          description: The phone of an user
-        email:
-          type: string
-          example: xnetsoldier@xnet.com
-          description: The email of an user
-        discord:
-          type: string
-          example: xnetsoldier
-          description: The discord handle of a user
-        telegram:
-          type: string
-          example: "@xnetsoldier"
-          description: The telegram handle of a user
-        socials:
-          type: string
-          example: www.linkedin.com/company/xnetmobile
-          description: The social media link of a user
-        createdat:
-          type: string
-          example: 2025-01-03T14:54:29.204Z
-          description: The date and time an user was created
-        updatedat:
-          type: string
-          example: 2025-01-03T14:54:29.204Z
-          description: The date and time an user was updated
     User:
       type: object
       properties:
