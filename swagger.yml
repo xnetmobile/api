@@ -830,7 +830,7 @@ paths:
         '200':
           description: Successful
           content:
-            application/json: 
+            application/json:
               schema:
                 type: array
                 items:
@@ -860,7 +860,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/Wallet'
+                $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -890,7 +890,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/Wallet'
+                $ref: '#/components/schemas/Wallet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1102,7 +1102,7 @@ paths:
                     type: "community"
                     createdat: "2025-01-03T14:54:29.204Z"
                     updatedat: "2025-01-03T14:54:29.204Z"
-                    users: ["user@xnet.company"]
+                    users: [ "user@xnet.company" ]
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1596,6 +1596,18 @@ components:
           type: string
           example: 547-546-4567
           description: The phone of a venue
+        building:
+          type: string
+          example: The Pinnacle
+          description: Building or structure name.
+        floor:
+          type: string
+          example: 55
+          description: Floor number of the building.
+        room:
+          type: string
+          example: 12
+          description: Room identifier.
         isp:
           $ref: '#/components/schemas/IspDtoR'
     VenueUpdateBody:
@@ -1617,6 +1629,18 @@ components:
           type: string
           example: 547-546-4567
           description: The phone of a venue
+        building:
+          type: string
+          example: The Pinnacle
+          description: Building or structure name.
+        floor:
+          type: string
+          example: 55
+          description: Floor number of the building.
+        room:
+          type: string
+          example: 12
+          description: Room identifier.
         isp:
           $ref: '#/components/schemas/IspDto'
     VenueResponseDto:
@@ -1662,6 +1686,18 @@ components:
           type: string
           example: 34.043087
           description: The geographic coordinate that specifies the west-east position of a venue
+        building:
+          type: string
+          example: The Pinnacle
+          description: Building or structure name.
+        floor:
+          type: string
+          example: 55
+          description: Floor number of the building.
+        room:
+          type: string
+          example: 12
+          description: Room identifier.
         isp:
           $ref: '#/components/schemas/IspDto'
     VenueWallet:
@@ -1840,7 +1876,7 @@ components:
             type:
               type: string
               example: community
-              description: The type of the organization  
+              description: The type of the organization
             createdat:
               type: string
               format: date-time
@@ -2123,7 +2159,7 @@ components:
         orgRole:
           type: string
           example: org-admin
-          description: This field defines the role of a member within the organization. 
+          description: This field defines the role of a member within the organization.
     User:
       type: object
       properties:
@@ -2210,7 +2246,7 @@ components:
               type: array
               items:
                 type: string
-              example: [www.linkedin.com/company/xnetmobile]
+              example: [ www.linkedin.com/company/xnetmobile ]
             createdat:
               type: string
               format: date-time
@@ -2361,7 +2397,7 @@ components:
       properties:
         venues:
           type: array
-          items: 
+          items:
             allOf:
               - $ref: '#/components/schemas/VenueResponseDto'
               - properties:
