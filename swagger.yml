@@ -2,7 +2,8 @@ openapi: 3.0.3
 info:
   title: XNET API
   description: |-
-    This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.2.0 is unstable Beta and subject to breaking changes.
+    This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.2.0 is unstable Beta and subject to breaking changes. 
+    If you are interested in joining the Beta please reach out to an XNET team member.
   version: 0.2.0
 servers:
   - url: https://api.xnetmobile.com
