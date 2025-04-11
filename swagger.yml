@@ -2,15 +2,16 @@ openapi: 3.0.3
 info:
   title: XNET API
   description: |-
-    This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.1 is unstable and subject to breaking changes. Please wait for v1.0 before building with this API.
-  version: 0.1.2
+    This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.2.0 is unstable Beta and subject to breaking changes. 
+    If you are interested in joining the Beta please reach out to an XNET team member.
+  version: 0.2.0
 servers:
-  - url: https://api.xnet.company
+  - url: https://api.xnetmobile.com
 security:
   - BearerAuth: [ ]
 tags:
   - name: auth
-    description: XNET API Token
+    description: XNET API Toke
   - name: organizations
     description: XNET organizations
   - name: members
@@ -32,7 +33,7 @@ paths:
       tags:
         - auth
       summary: Get user token
-      description: Authenticate user and return access token
+      description: Authenticated users can return access token. Please reach out to XNET team for API access.
       security: [ ]  # No security required for login endpoint
       operationId: loginUser
       requestBody:
@@ -436,10 +437,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  allOf:
-                    - $ref: '#/components/schemas/CatalogWifi'
+                $ref: '#/components/schemas/CatalogWifiResponse'
+              examples:
+                success:
+                  summary: Example Wifi AP Catalog Response
+                  value:
+                    wifiAps:
+                      - id: "4b522fad-c6f2-49cc-82e5-3a5c75f90772"
+                        vendorname: "Alta"
+                        vendormodel: "AP6-PRO"
+                      - id: "4b7ac7c1-50b5-41d4-bfd7-69dab33ddad8"
+                        vendorname: "Cambium"
+                        vendormodel: "XE3-8"
+                    total: 38
+                    page: 1
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1348,7 +1359,7 @@ paths:
       tags:
         - users
       summary: Create user
-      description: Creates an new user
+      description: Creates a new user. After user is created an email will be sent to the user with a link to set their password.
       operationId: createUsers
       requestBody:
         required: false
@@ -2374,13 +2385,33 @@ components:
           type: string
           example: www.linkedin.com/company/xnetmobile
           description: The social media link of a user
+    CatalogWifiResponse:
+      type: object
+      properties:
+        wifiAps:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogWifi'
+        total:
+          type: integer
+          example: 38
+        page:
+          type: integer
+          example: 1
+    
     CatalogWifi:
       type: object
       properties:
         id:
           type: string
-          example: abeaaaf2-d142-11e1-b3e4-080027620c43
-          description: The device model uuid
+          format: uuid
+          example: 4b522fad-c6f2-49cc-82e5-3a5c75f90772
+        vendorname:
+          type: string
+          example: Alta
+        vendormodel:
+          type: string
+          example: AP6-PRO
     CatalogWifiDto:
       type: object
       properties:
