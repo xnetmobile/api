@@ -11,7 +11,7 @@ security:
   - BearerAuth: [ ]
 tags:
   - name: auth
-    description: XNET API Toke
+    description: XNET API Token
   - name: organizations
     description: XNET organizations
   - name: members
