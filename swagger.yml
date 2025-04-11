@@ -436,10 +436,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  allOf:
-                    - $ref: '#/components/schemas/CatalogWifi'
+                $ref: '#/components/schemas/CatalogWifiResponse'
+              examples:
+                success:
+                  summary: Example Wifi AP Catalog Response
+                  value:
+                    wifiAps:
+                      - id: "4b522fad-c6f2-49cc-82e5-3a5c75f90772"
+                        vendorname: "Alta"
+                        vendormodel: "AP6-PRO"
+                      - id: "4b7ac7c1-50b5-41d4-bfd7-69dab33ddad8"
+                        vendorname: "Cambium"
+                        vendormodel: "XE3-8"
+                    total: 38
+                    page: 1
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -2374,6 +2384,20 @@ components:
           type: string
           example: www.linkedin.com/company/xnetmobile
           description: The social media link of a user
+    CatalogWifiResponse:
+      type: object
+      properties:
+        wifiAps:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogWifi'
+        total:
+          type: integer
+          example: 38
+        page:
+          type: integer
+          example: 1
+    
     CatalogWifi:
       type: object
       properties:
@@ -2381,15 +2405,12 @@ components:
           type: string
           format: uuid
           example: 4b522fad-c6f2-49cc-82e5-3a5c75f90772
-          description: The device model UUID
         vendorname:
           type: string
           example: Alta
-          description: The vendor or manufacturer name
         vendormodel:
           type: string
           example: AP6-PRO
-          description: The model name of the WiFi access point
     CatalogWifiDto:
       type: object
       properties:
