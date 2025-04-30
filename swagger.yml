@@ -12,12 +12,12 @@ security:
 tags:
   - name: auth
     description: XNET API Token
+  - name: users
+    description: XNET users
   - name: organizations
     description: XNET organizations
   - name: members
     description: XNET members
-  - name: users
-    description: XNET users
   - name: venues
     description: XNET venues
   - name: devices
@@ -516,7 +516,10 @@ paths:
             properties:
               orgId:
                 type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04        
+              walletId:
+                type: string
+                example: bd121977-6eef-46f4-ac5e-6342c86edef6
       responses:
         '200':
           description: Successful
