@@ -4,7 +4,7 @@ info:
   description: |-
     This is a public interface that will allow XNET participants to obtain and manage information about XNET resources. v0.2.0 is unstable Beta and subject to breaking changes. 
     Beta is read only (GET). If you are interested in joining the Beta please reach out to an XNET team member.
-  version: 0.2.2
+  version: 0.2.3
 servers:
   - url: https://api.xnetmobile.com
 security:
@@ -2476,11 +2476,15 @@ components:
           example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
           description: The uuid of the device's venue
     Tags:
-      type: array
-      description: The name of a tag
-      items:
-        type: string
-      example: [ A,B ]
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+          description: This is a personalized label for this resource
+          example:
+            - A
     TagsDto:
       type: object
       properties:
