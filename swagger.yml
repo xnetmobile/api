@@ -371,22 +371,31 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /devices/:{deviceId}/tags/:{tagName}:
     delete:
       tags:
         - devices
       summary: Remove tag from device
-      description: Remove tags association from a specific device
+      description: Remove a specific tag from a device
       operationId: removeDeviceTagById
       parameters:
-        - name: id
+        - name: deviceId
           in: path
           required: true
+          description: The device UUID
           schema:
             type: string
             example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+        - name: tagName
+          in: path
+          required: true
+          description: The name of the tag to remove
+          schema:
+            type: string
+            example: myTagName
       responses:
         '200':
-          description: Successful
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -740,29 +749,36 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /venues/:{venueId}/tags/:{tagName}:
     delete:
       tags:
         - venues
       summary: Remove tag from venue
-      description: Remove tags from a specific venue
+      description: Remove a specific tag from a venue
       operationId: removeVenueTagById
       parameters:
-        - name: id
+        - name: venueId
           in: path
           required: true
-          description: The uuid of a venue
+          description: The UUID of the venue
           schema:
             type: string
             example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+        - name: tagName
+          in: path
+          required: true
+          description: The name of the tag to remove
+          schema:
+            type: string
+            example: myTagName
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
                 allOf:
                   - $ref: '#/components/schemas/VenueResponseDto'
-                  - $ref: '#/components/schemas/TagsDto'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
