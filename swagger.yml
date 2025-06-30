@@ -22,6 +22,8 @@ tags:
     description: XNET venues
   - name: devices
     description: XNET devices
+  - name: tags
+    description: XNET tags
   - name: catalogs
     description: XNET catalogs
   - name: wallets
@@ -402,6 +404,27 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/DeviceId'
                   - $ref: '#/components/schemas/DeviceDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /tags:
+    get:
+      tags:
+        - tags
+      summary: Get list of tags
+      description: Get a list of your tags
+      operationId: getTags
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/TagsObj'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1831,6 +1854,13 @@ components:
           example:
             - VPN Gateway
             - Network Segmentation (L3) (VLANS)
+    Tags:
+      type: object
+      properties:
+        id:
+          type: string
+          example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+          description: The device uuid
     Wallet:
       type: object
       properties:
@@ -2491,16 +2521,43 @@ components:
           type: string
           example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
           description: The uuid of the device's venue
-    Tags:
-      type: object
-      properties:
-        tags:
-          type: array
-          items:
+    TagsObj:
+      type: array
+      items:
+        type: object
+        properties:
+          tagid:
             type: string
-          description: This is a personalized label for this resource
-          example:
-            - A
+            format: uuid
+            description: Unique identifier for the tag
+          name:
+            type: string
+            description: The human-readable name of the tag
+          orgid:
+            type: string
+            format: uuid
+            description: Identifier of the organization that owns this tag
+          createdat:
+            type: string
+            format: date-time
+            description: Timestamp when this tag was created
+          updatedat:
+            type: string
+            format: date-time
+            description: Timestamp when this tag was last updated
+        required:
+          - tagid
+          - name
+          - orgid
+          - createdat
+          - updatedat
+      description: A list of tag objects
+      example:
+        - tagid: "f852d8ca-49b9-4eb1-9d89-fbc45509707d"
+          name: "blue team"
+          orgid: "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d"
+          createdat: "2025-06-24T23:49:33.160Z"
+          updatedat: "2025-06-24T23:49:33.159Z"
     TagsDto:
       type: object
       properties:
