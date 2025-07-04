@@ -356,7 +356,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Tags'
+              $ref: '#/components/schemas/TagsDto'
       responses:
         '201':
           description: Successful
@@ -756,7 +756,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Tags'
+              $ref: '#/components/schemas/TagsDto'
       responses:
         '200':
           description: Successful
