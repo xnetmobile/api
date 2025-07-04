@@ -86,32 +86,34 @@ paths:
       description: Get a list of devices that can be filtered by organizations and/or venues
       operationId: getDevices
       parameters:
+        - name: filter[orgId]
+          in: query
+          required: false
+          description: Filter by organization ID
+          schema:
+            type: string
+            example: "{{orgId}}"
+        - name: filter[venueId]
+          in: query
+          required: false
+          description: Filter by venue ID
+          schema:
+            type: string
+            example: "{{venueId}}"
         - name: page
           in: query
           required: false
           description: The page number to retrieve
           schema:
             type: integer
+            example: 1
         - name: limit
           in: query
           description: The number of items per page
           required: false
           schema:
             type: integer
-        - name: filter
-          in: query
-          required: false
-          description: A pattern to filter for in organization id and/or venue id, i.e path?filter[orgId]=value&filter[venueId]=value
-          schema:
-            type: object
-            properties:
-              orgId:
-                type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
-              venueId:
-                type: string
-                example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
-                description: The uuid of the device's venue
+            example: 10
       responses:
         '200':
           description: Successful
@@ -439,30 +441,34 @@ paths:
       description: Get a list of Wifi AP models that can be filtered by vendor name, model or product code
       operationId: getWifiApModels
       parameters:
-        - name: vendor
+        - name: vendorname
           in: query
           description: A pattern to filter for in vendor name
           required: false
           schema:
             type: string
-        - name: model
+            example: "{{vendorname}}"
+        - name: vendormodel
           in: query
           description: A pattern to filter for in vendor model
           required: false
           schema:
             type: string
+            example: "{{vendormodel}}"
         - name: page
           in: query
           required: false
           description: The page number to retrieve
           schema:
             type: integer
+            example: 1
         - name: limit
           in: query
           description: The number of items per page
           required: false
           schema:
             type: integer
+            example: 10
       responses:
         '200':
           description: Successful
@@ -519,6 +525,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+
   /venues:
     get:
       tags:
@@ -527,28 +534,27 @@ paths:
       description: Get a list of venues that can be filtered by organizations
       operationId: getVenues
       parameters:
+        - name: filter[orgId]
+          in: query
+          required: false
+          description: Filter by organization ID
+          schema:
+            type: string
+            example: "{{orgId}}"
         - name: page
           in: query
           required: false
           description: The page number to retrieve
           schema:
             type: integer
+            example: 1
         - name: limit
           in: query
           description: The number of items per page
           required: false
           schema:
             type: integer
-        - name: filter
-          in: query
-          required: false
-          description: A pattern to filter for in organization id , i.e path?filter[orgId]=value
-          schema:
-            type: object
-            properties:
-              orgId:
-                type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+            example: 10
       responses:
         '200':
           description: Successful
@@ -845,37 +851,41 @@ paths:
       description: Get a list of wallets that can be filtered by organizations and/or venues and/or users
       operationId: findWallets
       parameters:
+        - name: filter[orgId]
+          in: query
+          required: false
+          description: Filter by organization ID
+          schema:
+            type: string
+            example: "{{orgId}}"
+        - name: filter[wallet]
+          in: query
+          required: false
+          description: Filter by wallet address
+          schema:
+            type: string
+            example: "{{walletId}}"
+        - name: filter[venueId]
+          in: query
+          required: false
+          description: Filter by venue ID
+          schema:
+            type: string
+            example: "{{venueId}}"
         - name: page
           in: query
           required: false
           description: The page number to retrieve
           schema:
             type: integer
+            example: 1
         - name: limit
           in: query
           required: false
           description: The number of items per page
           schema:
             type: integer
-        - name: filter
-          description: A pattern to filter for in organization, venue, or user identifier
-          in: query
-          required: false
-          schema:
-            type: object
-            properties:
-              orgId:
-                type: string
-                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-                description: The uuid of an organization
-              wallet:
-                type: string
-                example: HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH
-                description: The uuid of a venue
-              venueId:
-                type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
-                description: The uuid of a user
+            example: 10
       responses:
         '200':
           description: Successful
@@ -1014,35 +1024,41 @@ paths:
       description: Get a list of organizations
       operationId: findOrganizations
       parameters:
+        - name: filter[orgId]
+          in: query
+          required: false
+          description: Filter by organization ID
+          schema:
+            type: string
+            example: "{{orgId}}"
+        - name: filter[status]
+          in: query
+          required: false
+          description: Filter by organization status
+          schema:
+            type: string
+            example: "{{status}}"
+        - name: filter[type]
+          in: query
+          required: false
+          description: Filter by organization type
+          schema:
+            type: string
+            example: "{{type}}"
         - name: page
           in: query
           required: false
           description: The page number to retrieve
           schema:
             type: integer
+            example: 1
         - name: limit
           in: query
           description: The number of items per page
           required: false
           schema:
             type: integer
-        - name: filter
-          in: query
-          required: false
-          description: A pattern to filter for in organization identifier, i.e /organizations?filter[orgId]=value
-          schema:
-            type: object
-            properties:
-              orgId:
-                type: string
-                example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-              status:
-                type: string
-                example: active
-              type:
-                type: string
-                example: community
-
+            example: 10
       responses:
         '200':
           description: Successful
@@ -1224,31 +1240,34 @@ paths:
       description: Get a list of members
       operationId: findAllOrgMembers
       parameters:
+        - name: filter[orgId]
+          in: query
+          required: false
+          description: Filter by organization ID
+          schema:
+            type: string
+            example: "{{orgId}}"
+        - name: filter[userId]
+          in: query
+          required: false
+          description: Filter by user ID
+          schema:
+            type: string
+            example: "{{userId}}"
         - name: page
           in: query
           required: false
           description: The page number to retrieve
           schema:
             type: integer
+            example: 1
         - name: limit
           in: query
           description: The number of items per page
           required: false
           schema:
             type: integer
-        - name: filter
-          in: query
-          required: false
-          description: A pattern to filter for in organization and/or user, i.e path?filter[orgId]=value&filter[userId]=value
-          schema:
-            type: object
-            properties:
-              orgId:
-                type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
-              userId:
-                type: string
-                example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+            example: 10
       responses:
         '200':
           description: successful operation
@@ -1353,31 +1372,34 @@ paths:
       description: Get a list of user that can be filtered by email and organization
       operationId: findUsers
       parameters:
+        - name: filter[orgId]
+          in: query
+          required: false
+          description: Filter by organization ID
+          schema:
+            type: string
+            example: "{{orgId}}"
+        - name: filter[email]
+          in: query
+          required: false
+          description: Filter by user email
+          schema:
+            type: string
+            example: "{{email}}"
         - name: page
           in: query
           required: false
           description: The page number to retrieve
           schema:
             type: integer
+            example: 1
         - name: limit
           in: query
           description: The number of items per page
           required: false
           schema:
             type: integer
-        - name: filter
-          in: query
-          required: false
-          description: A pattern to filter for in users and/or user, i.e /users?filter[orgId]=value&filter[email]=value
-          schema:
-            type: object
-            properties:
-              orgId:
-                type: string
-                example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
-              email:
-                type: string
-                example: user@xnet.company
+            example: 10
       responses:
         '200':
           description: Successful operation
