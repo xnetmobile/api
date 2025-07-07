@@ -38,7 +38,7 @@ v0.1 is unstable and subject to breaking changes. Please wait for v1.0 before bu
 
 - **Base URL:**  
   Base URL will be active once v1.0 is released.
-  `https://api.xnet.company`
+  `https://api.xnetmobile.com`
 
 - **Authentication:**  
   All endpoints (except login) require a valid bearer token. Tokens are obtained via the `/auth/login` endpoint.
