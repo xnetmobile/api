@@ -1569,6 +1569,10 @@ components:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
           description: The uuid of the device's venue
+        name:
+          type: string
+          example: east rooftop
+          description: Custom device name
         macAddress:
           type: string
           format: int64
@@ -1598,6 +1602,10 @@ components:
           type: string
           example: 5tb083a7-a310-4a9a-8a26-cd78cdd35e39
           description: The uuid of the device's venue
+        name:
+          type: string
+          example: east rooftop
+          description: Custom device name
         macAddress:
           type: string
           format: int64
@@ -1626,6 +1634,10 @@ components:
           type: string
           example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
           description: The uuid of the device's venue
+        name:
+          type: string
+          example: east rooftop
+          description: Custom device name
         macAddress:
           type: string
           format: int64
