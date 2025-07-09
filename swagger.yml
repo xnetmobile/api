@@ -1076,7 +1076,7 @@ paths:
                   value: [
                     {
                       "id": "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d",
-                      "status": "active",
+                      "status": "operational",
                       "name": "XNET Main",
                       "phone": "123-456-7890",
                       "type": "community",
@@ -1090,7 +1090,7 @@ paths:
                   value: [
                     {
                       "id": "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d",
-                      "status": "active",
+                      "status": "operational",
                       "name": "XNET Branch",
                       "phone": "123-456-7891",
                       "type": "community",
@@ -1162,7 +1162,7 @@ paths:
                   summary: Response for a single organization
                   value:
                     id: "bb8ddad9-5eb8-44f5-a541-3a3134a1c82d"
-                    status: "active"
+                    status: "operational"
                     name: "XNET Main"
                     phone: "123-456-7890"
                     type: "community"
@@ -1616,7 +1616,7 @@ components:
       properties:
         status:
           type: string
-          example: active
+          example: operational
           description: The status of the device
         venueId:
           type: string
@@ -1760,7 +1760,7 @@ components:
           description: The name of a venue
         status:
           type: string
-          example: inactive
+          example: decommissioned
           description: The current status of a venue
         fulladdress:
           type: string
@@ -1898,6 +1898,9 @@ components:
           type: string
           example: 48739432-c72a-409f-b56c-88782c41c626
           description: Organization identifier associated with the wallet
+        lcstage:
+          type: string
+          example: healthy
         name:
           type: string
           nullable: true
@@ -1966,7 +1969,7 @@ components:
               description: The UUID of the organization
             status:
               type: string
-              example: Active
+              example: operational
               description: The status of the organization
             name:
               type: string
@@ -2028,7 +2031,7 @@ components:
           description: The uuid of an organization
         status:
           type: string
-          example: active
+          example: operational
           description: The status of an organization
         name:
           type: string
