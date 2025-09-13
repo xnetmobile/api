@@ -20,7 +20,7 @@ The **XNET API** is a unified public interface designed to empower XNET particip
 The **XNET API** is not just about data retrieval—it’s about providing a dynamic, scalable platform that evolves with the needs of its users, ensuring efficient resource management today and delivering innovative tools for tomorrow.
 
 ### Current Version (v0.1)
-v0.1 is unstable and subject to breaking changes. Please wait for v1.0 before building with this API.
+v0.1 is currently READ ONLY it is unstable and subject to breaking changes. Please wait for v1.0 before building with this API.
 - **Note:** This version is subject to change until it is fully released as v1.0.
 
 ### Version (v1.0)
