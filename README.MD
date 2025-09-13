@@ -4,7 +4,7 @@ Welcome to the **XNET API**—the public interface for managing and retrieving i
 
 ---
 
-**Documentation for this API can be found on our website at https://docs.xnet.company/tech/api/documentation**
+**Documentation for this API can be found on our website at https://xnet-mobile.gitbook.io/xnet-mobile-docs/deploy-connect-earn/api**
 
 ## Overview
 The **XNET API** is a unified public interface designed to empower XNET participants with seamless programmatic access to a wide range of digital resources. Built to manage and retrieve information about devices, venues, wallets, organizations, and user accounts, this API serves as the backbone of the emerging XNET core system.
