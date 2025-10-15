@@ -1692,7 +1692,6 @@ components:
         - fullAddress
         - venueDesc
         - venuePhone
-        - isp
       properties:
         orgId:
           type: string
