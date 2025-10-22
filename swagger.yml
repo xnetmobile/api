@@ -1701,9 +1701,13 @@ components:
           type: string
           example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
           description: The uuid of the wallet to which the venue belongs
-        name:
+        publicVenueName:
           type: string
           example: XNET Campus
+          description: The name of a venue
+        nickName:
+          type: string
+          example: LA East 14
           description: The name of a venue
         fullAddress:
           type: string
@@ -1779,9 +1783,13 @@ components:
           type: string
           example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
           description: The uuid of the wallet to which the venue belongs
-        name:
+        publicVenueName:
           type: string
           example: XNET Campus
+          description: The name of a venue
+        nickName:
+          type: string
+          example: LA East 14
           description: The name of a venue
         status:
           type: string
