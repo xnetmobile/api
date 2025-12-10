@@ -1711,7 +1711,7 @@ components:
           description: The full address of a venue
         venueDesc:
           type: string
-          example: PROFESSIONAL OFFICE
+          example: theater
           description: The type of a venue
         venuePhone:
           type: string
@@ -1744,7 +1744,7 @@ components:
           description: The name of a venue
         venueDesc:
           type: string
-          example: PROFESSIONAL OFFICE
+          example: theater
           description: The description of a venue
         venuePhone:
           type: string
@@ -1797,7 +1797,7 @@ components:
           description: The full address of a venue
         venueDesc:
           type: string
-          example: PROFESSIONAL OFFICE
+          example: theater
           description: The type of a venue
         venuePhone:
           type: string
