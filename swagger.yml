@@ -1734,10 +1734,6 @@ components:
     VenueUpdateBody:
       type: object
       properties:
-        orgId:
-          type: string
-          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
-          description: The uuid of the organization to which the venue belongs
         name:
           type: string
           example: XNET Campus
