@@ -28,6 +28,8 @@ tags:
     description: XNET catalogs
   - name: wallets
     description: XNET wallets
+  - name: notifications
+    description: XNET user notifications
 
 paths:
   /auth/login:
@@ -1562,6 +1564,254 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /notifications/unread:
+    get:
+      tags:
+        - notifications
+      summary: Get unread notifications
+      description: Get unread notifications for the authenticated user within an organization.
+      operationId: getUnreadNotifications
+      parameters:
+        - name: orgId
+          in: query
+          required: true
+          description: Filter notifications by organization ID
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          required: false
+          description: The number of items per page
+          schema:
+            type: integer
+            maximum: 100
+            example: 20
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notifications:
+    get:
+      tags:
+        - notifications
+      summary: Get notifications
+      description: Get notifications for the authenticated user within an organization.
+      operationId: getNotifications
+      parameters:
+        - name: orgId
+          in: query
+          required: true
+          description: Filter notifications by organization ID
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+        - name: lcStage
+          in: query
+          required: false
+          description: Filter notifications by lifecycle stage
+          schema:
+            $ref: '#/components/schemas/NotificationState'
+        - name: page
+          in: query
+          required: false
+          description: The page number to retrieve
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          required: false
+          description: The number of items per page
+          schema:
+            type: integer
+            maximum: 100
+            example: 20
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notifications/mark-all-read:
+    patch:
+      tags:
+        - notifications
+      summary: Mark all notifications read
+      description: Marks all unread notifications as read for the authenticated user within an organization.
+      operationId: markAllNotificationsRead
+      parameters:
+        - name: orgId
+          in: query
+          required: true
+          description: Filter notifications by organization ID
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkAllNotificationsReadResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notifications/:{id}:
+    patch:
+      tags:
+        - notifications
+      summary: Update notification state
+      description: Update a notification lifecycle stage for the authenticated user within an organization.
+      operationId: updateNotificationState
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The notification uuid
+          schema:
+            type: string
+            example: 53dcd029-4921-4a87-9a91-9f0c4bdfb3ab
+        - name: orgId
+          in: query
+          required: true
+          description: Filter notifications by organization ID
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchNotificationStateRequest'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationStateUpdateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notifications/settings:
+    get:
+      tags:
+        - notifications
+      summary: Get notification settings
+      description: Get notification settings for the authenticated user within an organization.
+      operationId: getNotificationSettings
+      parameters:
+        - name: orgId
+          in: query
+          required: true
+          description: Filter settings by organization ID
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationSetting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notifications/settings/:{id}:
+    patch:
+      tags:
+        - notifications
+      summary: Update notification setting
+      description: Update one notification setting for the authenticated user within an organization.
+      operationId: updateNotificationSetting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The notification setting uuid
+          schema:
+            type: string
+            example: a26dfdc2-1f5a-4e8d-84fc-8bbd10260fc9
+        - name: orgId
+          in: query
+          required: true
+          description: Filter settings by organization ID
+          schema:
+            type: string
+            example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchNotificationSettingRequest'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSetting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
@@ -2639,6 +2889,128 @@ components:
           type: string
           example: 2025-01-03T14:54:29.204Z
           description: The date and time a qualification venue was updated
+    NotificationState:
+      type: string
+      enum:
+        - unread
+        - read
+        - dismissed
+        - opened
+      example: unread
+    NotificationItem:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 53dcd029-4921-4a87-9a91-9f0c4bdfb3ab
+          description: The notification uuid
+        title:
+          type: string
+          example: Device status changed
+        details:
+          type: string
+          example: A device in your organization changed status.
+        actorEmail:
+          type: string
+          nullable: true
+          example: user@example.com
+        actorName:
+          type: string
+          nullable: true
+          example: Jane Smith
+        actorUserId:
+          type: string
+          nullable: true
+          example: 8186a947-8670-4cc9-be1a-79efd18defea
+        type:
+          type: string
+          example: Device Status Changed
+          description: The notification type name
+        lcStage:
+          $ref: '#/components/schemas/NotificationState'
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-01-03T14:54:29.204Z
+    NotificationListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationItem'
+        total:
+          type: integer
+          example: 12
+        page:
+          type: integer
+          example: 1
+    PatchNotificationStateRequest:
+      type: object
+      required:
+        - lcStage
+      properties:
+        lcStage:
+          $ref: '#/components/schemas/NotificationState'
+    NotificationStateUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 53dcd029-4921-4a87-9a91-9f0c4bdfb3ab
+          description: The notification uuid
+        lcStage:
+          $ref: '#/components/schemas/NotificationState'
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2025-01-03T14:54:29.204Z
+    MarkAllNotificationsReadResponse:
+      type: object
+      properties:
+        updatedCount:
+          type: integer
+          example: 4
+        lcStage:
+          type: string
+          enum:
+            - read
+          example: read
+    NotificationSetting:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a26dfdc2-1f5a-4e8d-84fc-8bbd10260fc9
+          description: The notification setting uuid
+        typename:
+          type: string
+          example: Device Status Changed
+        grouptype:
+          type: string
+          example: device
+        isEmailEnabled:
+          type: boolean
+          example: true
+        isPushEnabled:
+          type: boolean
+          example: true
+        isOperatorConsoleEnabled:
+          type: boolean
+          example: true
+    PatchNotificationSettingRequest:
+      type: object
+      minProperties: 1
+      properties:
+        isEmailEnabled:
+          type: boolean
+          example: true
+        isPushEnabled:
+          type: boolean
+          example: true
+        isOperatorConsoleEnabled:
+          type: boolean
+          example: true
     ErrorDto:
       type: object
       properties:
@@ -2678,6 +3050,12 @@ components:
             $ref: '#/components/schemas/ErrorDto'
     Unauthorized:
       description: Unauthorized. See specific error message.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    Forbidden:
+      description: Access to the resource is forbidden
       content:
         application/json:
           schema:
