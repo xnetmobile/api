@@ -447,23 +447,37 @@ paths:
       tags:
         - catalogs
       summary: Get list of Wifi AP models
-      description: Get a list of Wifi AP models that can be filtered by vendor name, model or product code
+      description: Get a list of Wifi AP models that can be filtered by vendor name, model, status, or catalog identifiers
       operationId: getWifiApModels
       parameters:
-        - name: vendorname
+        - name: filter[vendorName]
           in: query
           description: A pattern to filter for in vendor name
           required: false
           schema:
             type: string
-            example: "{{vendorname}}"
-        - name: vendormodel
+            example: "{{vendorName}}"
+        - name: filter[vendorModel]
           in: query
           description: A pattern to filter for in vendor model
           required: false
           schema:
             type: string
-            example: "{{vendormodel}}"
+            example: "{{vendorModel}}"
+        - name: filter[status]
+          in: query
+          description: Filter by catalog model status
+          required: false
+          schema:
+            type: string
+            example: "{{status}}"
+        - name: filter[ids]
+          in: query
+          description: Comma-separated catalog model identifiers to include
+          required: false
+          schema:
+            type: string
+            example: "{{catalogIds}}"
         - name: page
           in: query
           required: false
