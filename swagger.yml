@@ -873,6 +873,25 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+          
+  /venuedescs:
+    get:
+      tags:
+        - venues
+      summary: Get list of venue descriptions
+      description: Get the public catalog of allowed venue descriptions and their WRIX-L type/group mappings.
+      security: [ ]
+      operationId: getVenueDescs
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVenueDesc'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /wallets:
     get:
       tags:
@@ -2814,6 +2833,46 @@ components:
           type: string
           description: "The model name or designation from the vendor."
           example: "XR6"
+    VenueDesc:
+      type: object
+      properties:
+        venueDescId:
+          type: string
+          format: uuid
+          example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+          description: The uuid of a venue description.
+        venueDesc:
+          type: string
+          example: Coffee Shop
+          description: The canonical venue description.
+        venueType:
+          type: integer
+          example: 13
+          description: The WRIX-L venue type code.
+        venueGroup:
+          type: integer
+          example: 1
+          description: The WRIX-L venue group code.
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-03-13T23:38:34.193Z"
+          description: Timestamp when the venue description was created.
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-03-13T23:38:34.193Z"
+          description: Timestamp when the venue description was last updated.
+    ListVenueDesc:
+      type: object
+      properties:
+        venueDescs:
+          type: array
+          items:
+            $ref: '#/components/schemas/VenueDesc'
+        total:
+          type: integer
+          example: 1
     ListVenue:
       type: object
       properties:
