@@ -30,6 +30,8 @@ tags:
     description: XNET wallets
   - name: notifications
     description: XNET user notifications
+  - name: usage
+    description: XNET usage
 
 paths:
   /auth/login:
@@ -1845,7 +1847,349 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+
+  /usage/fleet:
+    get:
+      tags:
+        - usage
+      summary: Get fleet usage
+      description: Get the usage of your organization over time. Provide either `range`, or `from`, `to` and `granularity` together.
+      operationId: getFleetUsage
+      parameters:
+        - $ref: '#/components/parameters/UsageOrgId'
+        - $ref: '#/components/parameters/UsageRange'
+        - $ref: '#/components/parameters/UsageFrom'
+        - $ref: '#/components/parameters/UsageTo'
+        - $ref: '#/components/parameters/UsageGranularity'
+        - $ref: '#/components/parameters/UsageMetrics'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSeriesResponse'
+              example:
+                scope:
+                  type: fleet
+                  id: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+                granularity: day
+                from: '2026-08-01T00:00:00Z'
+                to: '2026-08-02T00:00:00Z'
+                completeThrough: '2026-09-16T07:00:00Z'
+                attribution: start-hour
+                basis: partner
+                metrics:
+                  available: [usage, identifiedUsers, sessions, auth, rejectCauses, underReported]
+                  unavailable: {}
+                series:
+                  - bucketStart: '2026-08-01T00:00:00Z'
+                    complete: true
+                    usageGibibytes: 39.8
+                    usageDownGibibytes: 35.8
+                    usageUpGibibytes: 4.0
+                    identifiedUsers: 512
+                    sessions: 3810
+                    avgSessionSeconds: 243.1
+                    auth:
+                      total: 4200
+                      accept: 3980
+                      reject: 220
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /usage/venues/{venueId}:
+    get:
+      tags:
+        - usage
+      summary: Get venue usage
+      description: Get the usage of one of your venues over time. Provide either `range`, or `from`, `to` and `granularity` together.
+      operationId: getVenueUsage
+      parameters:
+        - name: venueId
+          in: path
+          required: true
+          description: The uuid of a venue
+          schema:
+            type: string
+            example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+        - $ref: '#/components/parameters/UsageRange'
+        - $ref: '#/components/parameters/UsageFrom'
+        - $ref: '#/components/parameters/UsageTo'
+        - $ref: '#/components/parameters/UsageGranularity'
+        - $ref: '#/components/parameters/UsageMetrics'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSeriesResponse'
+              example:
+                scope:
+                  type: venue
+                  id: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+                granularity: day
+                from: '2026-08-01T00:00:00Z'
+                to: '2026-08-02T00:00:00Z'
+                completeThrough: '2026-09-16T07:00:00Z'
+                attribution: start-hour
+                basis: partner
+                metrics:
+                  available: [usage, identifiedUsers, sessions, auth, rejectCauses, underReported]
+                  unavailable: {}
+                series:
+                  - bucketStart: '2026-08-01T00:00:00Z'
+                    complete: true
+                    usageGibibytes: 39.8
+                    usageDownGibibytes: 35.8
+                    usageUpGibibytes: 4.0
+                    identifiedUsers: 512
+                    sessions: 3810
+                    avgSessionSeconds: 243.1
+                    auth:
+                      total: 4200
+                      accept: 3980
+                      reject: 220
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /usage/devices/{deviceId}:
+    get:
+      tags:
+        - usage
+      summary: Get device usage
+      description: Get the usage of one of your devices over time. Provide either `range`, or `from`, `to` and `granularity` together.
+      operationId: getDeviceUsage
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: The device uuid
+          schema:
+            type: string
+            example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+        - $ref: '#/components/parameters/UsageRange'
+        - $ref: '#/components/parameters/UsageFrom'
+        - $ref: '#/components/parameters/UsageTo'
+        - $ref: '#/components/parameters/UsageGranularity'
+        - $ref: '#/components/parameters/UsageMetrics'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSeriesResponse'
+              example:
+                scope:
+                  type: device
+                  id: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+                granularity: day
+                from: '2026-08-01T00:00:00Z'
+                to: '2026-08-02T00:00:00Z'
+                completeThrough: '2026-09-16T07:00:00Z'
+                attribution: start-hour
+                basis: partner
+                metrics:
+                  available: [usage, identifiedUsers, sessions, auth, rejectCauses, underReported]
+                  unavailable: {}
+                series:
+                  - bucketStart: '2026-08-01T00:00:00Z'
+                    complete: true
+                    usageGibibytes: 39.8
+                    usageDownGibibytes: 35.8
+                    usageUpGibibytes: 4.0
+                    identifiedUsers: 512
+                    sessions: 3810
+                    avgSessionSeconds: 243.1
+                    auth:
+                      total: 4200
+                      accept: 3980
+                      reject: 220
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /usage/devices:
+    get:
+      tags:
+        - usage
+      summary: Get devices ranked by usage
+      description: Get the devices of your organization ranked by total usage over a time window. The time window defaults to the last 7 days. To get the next page, send `nextCursor` as `cursor` with no other parameter except `orgId`. If the ranking changes while paging the API responds with 409; start again from the first page.
+      operationId: getDeviceUsageList
+      parameters:
+        - $ref: '#/components/parameters/UsageOrgId'
+        - $ref: '#/components/parameters/UsageRange'
+        - $ref: '#/components/parameters/UsageFrom'
+        - $ref: '#/components/parameters/UsageTo'
+        - $ref: '#/components/parameters/UsageGranularity'
+        - $ref: '#/components/parameters/UsageOrder'
+        - $ref: '#/components/parameters/UsageLimit'
+        - $ref: '#/components/parameters/UsageCursor'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageDeviceList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /usage/venues:
+    get:
+      tags:
+        - usage
+      summary: Get venues ranked by usage
+      description: Get the provisioned, operational and suspended venues of your organization ranked by total usage over a time window. The time window defaults to the last 7 days. To get the next page, send `nextCursor` as `cursor` with no other parameter except `orgId`. If the ranking changes while paging the API responds with 409; start again from the first page.
+      operationId: getVenueUsageList
+      parameters:
+        - $ref: '#/components/parameters/UsageOrgId'
+        - $ref: '#/components/parameters/UsageRange'
+        - $ref: '#/components/parameters/UsageFrom'
+        - $ref: '#/components/parameters/UsageTo'
+        - $ref: '#/components/parameters/UsageGranularity'
+        - $ref: '#/components/parameters/UsageOrder'
+        - $ref: '#/components/parameters/UsageLimit'
+        - $ref: '#/components/parameters/UsageCursor'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageVenueList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 components:
+  parameters:
+    UsageOrgId:
+      name: orgId
+      in: query
+      required: false
+      description: The organization uuid. Only required when your user belongs to more than one organization, and it must be one of them.
+      schema:
+        type: string
+        example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+    UsageRange:
+      name: range
+      in: query
+      required: false
+      description: Time window ending now. Cannot be combined with `from`, `to` or `granularity`.
+      schema:
+        type: string
+        enum: ['1D', '7D', '14D', '30D']
+        example: 7D
+    UsageFrom:
+      name: from
+      in: query
+      required: false
+      description: Start of a custom time window (ISO 8601 with `Z` or an offset). Requires `to` and `granularity`.
+      schema:
+        type: string
+        format: date-time
+        example: '2026-08-01T00:00:00Z'
+    UsageTo:
+      name: to
+      in: query
+      required: false
+      description: End of a custom time window, exclusive (ISO 8601 with `Z` or an offset). Requires `from` and `granularity`.
+      schema:
+        type: string
+        format: date-time
+        example: '2026-09-01T00:00:00Z'
+    UsageGranularity:
+      name: granularity
+      in: query
+      required: false
+      description: Bucket size of a custom time window. Requires `from` and `to`. The window can span at most 14 days for `hour`, 92 days for `day` and 53 weeks for `week`.
+      schema:
+        type: string
+        enum: [hour, day, week]
+        example: day
+    UsageMetrics:
+      name: metrics
+      in: query
+      required: false
+      description: Comma-separated list of the metrics to return. `usage`, `identifiedUsers`, `sessions` and `auth` are returned by default. `rejectCauses` and `underReported` are only returned when requested.
+      schema:
+        type: string
+        example: usage,sessions
+    UsageOrder:
+      name: order
+      in: query
+      required: false
+      description: Sort direction by total usage
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+    UsageLimit:
+      name: limit
+      in: query
+      required: false
+      description: The number of items per page
+      schema:
+        type: integer
+        enum: [10, 20, 30, 50, 100, 200]
+        default: 20
+    UsageCursor:
+      name: cursor
+      in: query
+      required: false
+      description: The `nextCursor` value of the previous page. Expires 10 minutes after the first page.
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http
@@ -3084,6 +3428,292 @@ components:
         isOperatorConsoleEnabled:
           type: boolean
           example: true
+    UsageSeriesResponse:
+      type: object
+      properties:
+        scope:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [fleet, venue, device]
+              example: fleet
+              description: "`fleet` for `/usage/fleet`, `venue` for `/usage/venues/{venueId}`, `device` for `/usage/devices/{deviceId}`"
+            id:
+              type: string
+              example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+              description: The organization uuid when `type` is `fleet`, the venue uuid when `venue`, the device uuid when `device`
+        granularity:
+          type: string
+          enum: [hour, day, week]
+          example: day
+        from:
+          type: string
+          format: date-time
+          example: '2026-08-01T00:00:00Z'
+          description: Start of the time window (UTC)
+        to:
+          type: string
+          format: date-time
+          example: '2026-09-01T00:00:00Z'
+          description: End of the time window (UTC, exclusive)
+        completeThrough:
+          type: string
+          format: date-time
+          example: '2026-09-16T07:00:00Z'
+          description: Usage is final up to this time. Later buckets are not returned yet.
+        attribution:
+          type: string
+          example: start-hour
+          description: A session is counted in the hour it started
+        basis:
+          type: string
+          enum: [partner, carried]
+          example: partner
+          description: The valuation the usage figures are based on
+        metrics:
+          type: object
+          properties:
+            available:
+              type: array
+              items:
+                type: string
+              example: [usage, identifiedUsers, sessions, auth, rejectCauses, underReported]
+              description: The metrics that can be requested
+            unavailable:
+              type: object
+              additionalProperties:
+                type: string
+              description: The metrics that cannot be returned at the moment
+        series:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsageSeriesBucket'
+    UsageSeriesBucket:
+      type: object
+      properties:
+        bucketStart:
+          type: string
+          format: date-time
+          example: '2026-08-01T00:00:00Z'
+          description: Start of the bucket (UTC)
+        complete:
+          type: boolean
+          example: true
+          description: False while usage for this bucket is still being collected
+        usageGibibytes:
+          type: number
+          example: 39.8
+          description: Total usage in gibibytes (bytes / 1024^3)
+        usageDownGibibytes:
+          type: number
+          example: 35.8
+          description: Download usage in gibibytes
+        usageUpGibibytes:
+          type: number
+          example: 4.0
+          description: Upload usage in gibibytes
+        underReportedGibibytes:
+          type: number
+          example: 1.02
+          description: Only returned when `underReported` is requested. Usage carried but not included in the usage figures, in gibibytes.
+        underReportedDownGibibytes:
+          type: number
+          example: 0.9
+          description: Only returned when `underReported` is requested
+        underReportedUpGibibytes:
+          type: number
+          example: 0.12
+          description: Only returned when `underReported` is requested
+        identifiedUsers:
+          type: integer
+          example: 512
+          description: The number of distinct users in the bucket. Cannot be summed across buckets.
+        sessions:
+          type: integer
+          example: 3810
+          description: The number of sessions
+        avgSessionSeconds:
+          type: number
+          example: 243.1
+          description: The average session duration in seconds
+        auth:
+          type: object
+          properties:
+            total:
+              type: integer
+              example: 4200
+              description: The number of authentication requests
+            accept:
+              type: integer
+              example: 3980
+              description: The number of accepted authentication requests
+            reject:
+              type: integer
+              example: 220
+              description: The number of rejected authentication requests
+            rejectCauses:
+              type: object
+              additionalProperties:
+                type: integer
+              description: Only returned when `rejectCauses` is requested. The number of rejected authentication requests by cause.
+              example:
+                upstreamReject: 145
+                cachedReject: 30
+                proxyTimeout: 5
+                nasIdMalformed: 22
+                nasIdMissing: 8
+                missingAttribute: 0
+                noRoute: 10
+                accessDeniedLocal: 0
+                venueNotInPlan: 0
+                authorizeUnavailable: 0
+                realmBlockedAtEdge: 0
+                invalidCredentials: 0
+                other: 0
+    UsageListDto:
+      type: object
+      properties:
+        scope:
+          type: object
+          properties:
+            type:
+              type: string
+              example: organization
+            id:
+              type: string
+              example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+              description: The organization uuid
+        from:
+          type: string
+          format: date-time
+          example: '2026-09-09T00:00:00Z'
+          description: Start of the time window (UTC)
+        to:
+          type: string
+          format: date-time
+          example: '2026-09-16T00:00:00Z'
+          description: End of the time window (UTC, exclusive)
+        granularity:
+          type: string
+          enum: [hour, day, week]
+          example: day
+        completeThrough:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2026-09-16T07:00:00Z'
+          description: Usage is final up to this time
+        measuredTo:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2026-09-16T00:00:00Z'
+          description: The totals cover the time window up to this time
+        complete:
+          type: boolean
+          example: true
+          description: True when the totals cover the whole time window
+        attribution:
+          type: string
+          example: start-hour
+          description: A session is counted in the hour it started
+        basis:
+          type: string
+          enum: [partner, carried]
+          example: partner
+          description: The valuation the usage figures are based on
+        sort:
+          type: string
+          example: usageGibibytes
+        order:
+          type: string
+          enum: [asc, desc]
+          example: desc
+        limit:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 134
+          description: The total number of items in the ranking
+        nextCursor:
+          type: string
+          nullable: true
+          description: Send as `cursor` to get the next page. Null on the last page.
+    UsageDeviceList:
+      allOf:
+        - $ref: '#/components/schemas/UsageListDto'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/UsageDeviceItem'
+    UsageDeviceItem:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          example: e4eaaaf2-d142-11e1-b3e4-080027620cdd
+          description: The device uuid
+        usageState:
+          type: string
+          enum: [measured, unattributable, not_emitted]
+          example: measured
+          description: The usage fields are only present when `measured`. `unattributable` means usage cannot be matched to the device, `not_emitted` means usage is not available for the time window yet.
+        usageGibibytes:
+          type: number
+          example: 12.345
+          description: Total usage in gibibytes (bytes / 1024^3)
+        usageDownGibibytes:
+          type: number
+          example: 11.045
+          description: Download usage in gibibytes
+        usageUpGibibytes:
+          type: number
+          example: 1.3
+          description: Upload usage in gibibytes
+    UsageVenueList:
+      allOf:
+        - $ref: '#/components/schemas/UsageListDto'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/UsageVenueItem'
+            pageCursor:
+              type: string
+              description: Send as `cursor` to get the current page again
+    UsageVenueItem:
+      type: object
+      properties:
+        venueId:
+          type: string
+          example: 9fb083a7-a310-4a9a-8a26-cd78cdd35e04
+          description: The uuid of a venue
+        orgId:
+          type: string
+          example: bb8ddad9-5eb8-44f5-a541-3a3134a1c82d
+          description: The uuid of the organization to which the venue belongs
+        usageState:
+          type: string
+          enum: [measured, not_emitted]
+          example: measured
+          description: The usage fields are only present when `measured`. `not_emitted` means usage is not available for the time window yet.
+        usageGibibytes:
+          type: number
+          example: 120.5
+          description: Total usage in gibibytes (bytes / 1024^3)
+        usageDownGibibytes:
+          type: number
+          example: 108.25
+          description: Download usage in gibibytes
+        usageUpGibibytes:
+          type: number
+          example: 12.25
+          description: Upload usage in gibibytes
     ErrorDto:
       type: object
       properties:
